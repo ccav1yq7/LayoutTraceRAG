@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# venvs and local credentials
+.venv/
+.env
+.env.*
+!.env.example
+.venv-*/
+venv/
+
+# LayoutTrace runtime data / index / models
+.layouttrace/
+*.lance/
+models/
+*.mp4
+*.mkv
+*.webm
+
+# OS / editor
+.DS_Store
+._*
+.idea/
+.vscode/
+
+# downloaded datasets (not committed)
+data/
+
+# project-local model cache (HF_HOME), not committed
+.cache/

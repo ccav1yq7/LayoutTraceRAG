@@ -1,0 +1,23 @@
+{
+  "benchmark": "TVQA-Long (val)",
+  "compute": "NVIDIA GeForce RTX 4090",
+  "chunk_seconds": 30.0,
+  "models": {
+    "embed": "BAAI/bge-m3",
+    "rerank": "BAAI/bge-reranker-v2-m3",
+    "generate": "heuristic (extractive, offline)"
+  },
+  "n_questions": 336,
+  "n_episodes": 18,
+  "recall_at_5": 0.6666666666666666,
+  "recall_at_8": 0.7619047619047619,
+  "recall_at_20": 0.8660714285714286,
+  "timecode_localization_acc": 0.4107142857142857,
+  "faithfulness": 1.0,
+  "answer_f1_extractive": 0.03242399228641386,
+  "retrieval_latency_ms": {
+    "mean": 236.42716880959554,
+    "p50": 235.50028699901304,
+    "p95": 303.50457849999657
+  }
+}

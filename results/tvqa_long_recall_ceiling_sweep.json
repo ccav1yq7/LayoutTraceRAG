@@ -1,0 +1,67 @@
+{
+  "purpose": "Exhaustive search for what moves Recall@8 past the observed ceiling on TVQA-Long (18 episodes / 336 questions, BGE-M3 + bge-reranker-v2-m3). Every independent lever converges on ~0.84 -- chunk granularity, candidate-pool size, sliding-window overlap, and even a real LLM (gpt-5.4) replacing the heuristic query expansion. Conclusion: the ceiling is the embedding model's semantic-match capacity on this benchmark, not a chunking or query-formulation problem.",
+  "n_questions": 336,
+  "n_episodes": 18,
+  "sweep": [
+    {
+      "config": "hard-chunk 30s",
+      "recall_at_8": 0.7619,
+      "recall_at_20": 0.8661,
+      "timecode_localization_acc": 0.4107
+    },
+    {
+      "config": "hard-chunk 60s (best)",
+      "recall_at_8": 0.8423,
+      "recall_at_20": 0.9435,
+      "timecode_localization_acc": 0.3542
+    },
+    {
+      "config": "hard-chunk 90s",
+      "recall_at_8": 0.8393,
+      "recall_at_20": 0.9554,
+      "timecode_localization_acc": 0.3423
+    },
+    {
+      "config": "hard-chunk 120s",
+      "recall_at_8": 0.8393,
+      "recall_at_20": 0.9554,
+      "timecode_localization_acc": 0.3393
+    },
+    {
+      "config": "hard-chunk 180s",
+      "recall_at_8": 0.8393,
+      "recall_at_20": 0.9554,
+      "timecode_localization_acc": 0.3363
+    },
+    {
+      "config": "60s + candidate_k=80",
+      "recall_at_8": 0.8363,
+      "recall_at_20": 0.9435,
+      "timecode_localization_acc": 0.3542
+    },
+    {
+      "config": "sliding 60s/20s stride",
+      "recall_at_8": 0.7619,
+      "recall_at_20": 0.8631,
+      "timecode_localization_acc": 0.3631
+    },
+    {
+      "config": "sliding 90s/30s stride",
+      "recall_at_8": 0.7946,
+      "recall_at_20": 0.9137,
+      "timecode_localization_acc": 0.3244
+    },
+    {
+      "config": "sliding 60s/20s + candidate_k=90",
+      "recall_at_8": 0.7679,
+      "recall_at_20": 0.878,
+      "timecode_localization_acc": 0.3601
+    },
+    {
+      "config": "60s + REAL LLM query expansion (gpt-5.4, 18 episodes, recall-only)",
+      "recall_at_8": 0.8363,
+      "recall_at_20": 0.9435,
+      "timecode_localization_acc": 0.3542
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "n": 3,
+  "recall_at_k": 1.0,
+  "timecode_localization_acc": 1.0,
+  "faithfulness": 0.6666666666666666,
+  "answer_f1": 0.3237109658678286,
+  "latency_ms": {
+    "mean": 3.3182223172237477,
+    "p50": 3.1806649640202522,
+    "p95": 4.94620306417346
+  },
+  "config": {
+    "iou_threshold": 0.1
+  },
+  "per_example": [
+    {
+      "id": "q1",
+      "recall_hit": true,
+      "localized": true,
+      "grounded": true,
+      "answer_f1": 0.40740740740740744,
+      "latency_ms": 3.1806649640202522,
+      "n_citations": 2
+    },
+    {
+      "id": "q2",
+      "recall_hit": true,
+      "localized": true,
+      "grounded": false,
+      "answer_f1": 0.25,
+      "latency_ms": 5.142373964190483,
+      "n_citations": 1
+    },
+    {
+      "id": "q3",
+      "recall_hit": true,
+      "localized": true,
+      "grounded": true,
+      "answer_f1": 0.3137254901960785,
+      "latency_ms": 1.6316280234605074,
+      "n_citations": 2
+    }
+  ]
+}

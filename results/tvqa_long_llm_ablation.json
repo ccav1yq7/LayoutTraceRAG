@@ -1,0 +1,21 @@
+{
+  "benchmark": "TVQA-Long (val)",
+  "compute": "CPU",
+  "models": {
+    "embed": "BAAI/bge-m3",
+    "rerank": "BAAI/bge-reranker-v2-m3",
+    "generate": "LLM: OpenAI-compatible gpt-5.4"
+  },
+  "n_questions": 42,
+  "n_episodes": 2,
+  "top_k": 8,
+  "recall_at_k": 0.4523809523809524,
+  "timecode_localization_acc": 0.2857142857142857,
+  "faithfulness": 0.8095238095238095,
+  "answer_f1_extractive": 0.08567535200108274,
+  "latency_ms": {
+    "mean": 14510.121775475065,
+    "p50": 13488.797523081303,
+    "p95": 21699.624943884555
+  }
+}
