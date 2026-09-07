@@ -28,6 +28,7 @@ from layouttrace.graph import build_graph
 from layouttrace.index import InMemoryStore, build_retriever, get_embedder
 from layouttrace.llm import get_engine
 from layouttrace.retrieval.rerank import CrossEncoderReranker
+from layouttrace.retrieval.hybrid import collect_candidates
 
 
 def main() -> None:
@@ -87,19 +88,12 @@ def main() -> None:
         graph = build_graph(retriever, engine, cfg, reranker=reranker)
         for ex in ep.examples:
             gold = (ex.gold_start_s, ex.gold_end_s)
-            # --- retrieval quality: exactly what the system's retrieve node does —
+            # --- retrieval quality: shared candidate-fusion path used by the application —
             #     multi-query (HyDE / paraphrase) expansion, RRF-fused, then reranked —
             #     measured directly (standard Recall@k), NOT the CRAG-pruned graph set ---
             t0 = time.perf_counter()
             queries = engine.expand_query(ex.question) or [ex.question]
-            lookup, rankings = {}, []
-            for q in queries:
-                hits = retriever.retrieve(q, cfg.candidate_k)
-                rankings.append([n.id for n in hits])
-                for n in hits:
-                    lookup[n.id] = n
-            fused = reciprocal_rank_fusion(rankings, k=cfg.rrf_k)
-            cand = [lookup[i] for i, _ in fused if i in lookup]
+            cand = collect_candidates(retriever, queries, cfg.candidate_k, cfg.rrf_k)
             if reranker is not None:
                 cand = reranker.rerank(ex.question, cand, max(K_LIST))
             retr_ms = (time.perf_counter() - t0) * 1000.0

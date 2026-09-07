@@ -1,8 +1,8 @@
 """Second-stage reranking: a cross-encoder re-scores the fused candidates.
 
 Hybrid recall is fast but coarse; a cross-encoder reads each (query, node) pair
-jointly and reorders for precision. Falls back to identity when the model isn't
-installed, so the graph always runs.
+jointly and reorders for precision. Model loading failures are explicit errors;
+tests may inject IdentityReranker deliberately.
 """
 from __future__ import annotations
 
@@ -36,12 +36,11 @@ class CrossEncoderReranker(Reranker):
 
 
 def get_reranker(config: Config | None = None) -> Reranker | None:
-    """Return a reranker when enabled (falling back to identity if the model is
-    unavailable), or ``None`` to skip the stage entirely."""
+    """Load the enabled reranker, or return None when explicitly disabled."""
     config = config or Config()
     if not config.use_reranker:
         return None
     try:
         return CrossEncoderReranker(config.rerank_model)
-    except Exception:
-        return IdentityReranker()
+    except Exception as exc:
+        raise RuntimeError(f"Cannot load reranker {config.rerank_model!r}") from exc

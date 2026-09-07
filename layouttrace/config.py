@@ -40,6 +40,14 @@ class Config:
     chunk_seconds: float = float(os.environ.get("LT_CHUNK_SECONDS", "30"))
     scene_threshold: float = float(os.environ.get("LT_SCENE_THRESHOLD", "0.4"))
 
+    def __post_init__(self):
+        if not 1 <= self.top_k <= self.candidate_k or self.rrf_k <= 0:
+            raise ValueError("Require 1 <= top_k <= candidate_k and positive rrf_k")
+        if self.max_iterations < 0 or self.max_regen < 0 or not 0 <= self.groundedness_threshold <= 1:
+            raise ValueError("Invalid retrieval/verification budget or threshold")
+        if self.chunk_seconds <= 0 or self.visual_weight < 0:
+            raise ValueError("Require positive chunks and nonnegative visual weight")
+
     @property
     def has_llm_key(self) -> bool:
         key = "OPENAI_API_KEY" if self.llm_provider == "openai" else "ANTHROPIC_API_KEY"

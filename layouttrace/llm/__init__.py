@@ -9,14 +9,16 @@ __all__ = ["LLMEngine", "HeuristicEngine", "get_engine"]
 
 
 def get_engine(config: Config | None = None) -> LLMEngine:
-    """Return a LangChain-backed engine when a provider key is set, else the
-    heuristic engine so the pipeline always runs."""
+    """Use the configured provider, or local heuristic generation when no key is set.
+
+    A configured provider failing to initialize is an error, not permission to silently switch.
+    """
     config = config or Config()
     if config.has_llm_key:
         try:
             from .langchain_engine import LangChainEngine
 
             return LangChainEngine(config.llm_provider, config.llm_model)
-        except Exception:  # missing optional dep or provider init failure
-            pass
+        except Exception as exc:
+            raise RuntimeError("Configured LLM could not be initialized; check the llm extra and provider settings") from exc
     return HeuristicEngine()

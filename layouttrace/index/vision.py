@@ -5,8 +5,7 @@ space, so a text question can retrieve **frames by their visual content**, not
 just by OCR text. (For document-page-style visual retrieval, ColPali-style
 late-interaction is a drop-in alternative behind the same ``VisionEmbedder``.)
 
-Falls back to a deterministic hash encoder so the pipeline stays runnable and
-testable without downloading a vision model.
+An explicit hash-demo encoder supports model-free tests; real-model failures raise.
 """
 from __future__ import annotations
 
@@ -58,10 +57,12 @@ class HashVisionEmbedder(VisionEmbedder):
 
 
 def get_vision_embedder(model: str = "clip-ViT-B-32") -> VisionEmbedder:
+    if model == "hash-demo":
+        return HashVisionEmbedder()
     try:
         return CrossModalEmbedder(model)
-    except Exception:
-        return HashVisionEmbedder()
+    except Exception as exc:
+        raise RuntimeError(f"Cannot load visual model {model!r}") from exc
 
 
 class VisualSearcher(Searcher):

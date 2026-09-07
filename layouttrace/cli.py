@@ -7,6 +7,7 @@ from .config import Config
 from .graph import answer_question, build_graph
 from .index import LanceStore, build_retriever
 from .llm import get_engine
+from .retrieval.rerank import get_reranker
 
 
 def _index(args: argparse.Namespace) -> None:
@@ -21,7 +22,8 @@ def _index(args: argparse.Namespace) -> None:
 def _ask(args: argparse.Namespace) -> None:
     config = Config()
     store = LanceStore(config)
-    graph = build_graph(build_retriever(store, config), get_engine(config), config)
+    graph = build_graph(build_retriever(store, config), get_engine(config), config,
+                        reranker=get_reranker(config))
     ans = answer_question(graph, args.question)
     print(ans.render())
 
@@ -31,7 +33,8 @@ def _eval(args: argparse.Namespace) -> None:
 
     config = Config()
     store = LanceStore(config)
-    graph = build_graph(build_retriever(store, config), get_engine(config), config)
+    graph = build_graph(build_retriever(store, config), get_engine(config), config,
+                        reranker=get_reranker(config))
     report = evaluate(graph, load_examples(args.examples), iou_threshold=args.iou)
     report.save(args.out)
     print(report.summary())

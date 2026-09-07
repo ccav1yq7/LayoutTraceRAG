@@ -9,8 +9,7 @@ import re
 
 from ..config import Config
 from ..llm.base import LLMEngine
-from ..retrieval.fusion import reciprocal_rank_fusion
-from ..retrieval.hybrid import HybridRetriever
+from ..retrieval.hybrid import HybridRetriever, collect_candidates
 from ..retrieval.rerank import Reranker
 from ..types import Citation
 from .state import GraphState, merge_evidence
@@ -29,21 +28,17 @@ def build_nodes(
 
     def retrieve(state: GraphState) -> GraphState:
         queries = state.get("queries") or [state["query"]]
-        rankings, node_map = [], {}
-        for q in queries:
-            hits = retriever.retrieve(q, config.candidate_k)
-            rankings.append([n.id for n in hits])
-            node_map.update({n.id: n for n in hits})
-        fused = reciprocal_rank_fusion(rankings, k=config.rrf_k)
-        new = [node_map[i] for i, _ in fused[: config.top_k]]
-        merged = merge_evidence(state.get("evidence", []), new)
+        new = collect_candidates(retriever, queries, config.candidate_k, config.rrf_k)
+        merged = merge_evidence(new, state.get("evidence", []))[:config.candidate_k]
+        if reranker is None:
+            merged = merged[:config.top_k]
         return {"evidence": merged,
                 "notes": [f"retrieve[{state.get('iteration', 0)}]: {len(queries)}q → {len(merged)} nodes"]}
 
     def rerank(state: GraphState) -> GraphState:
         if reranker is None:
             return {}
-        q = state.get("query") or state["question"]
+        q = state["question"]
         ranked = reranker.rerank(q, state.get("evidence", []), config.top_k)
         return {"evidence": ranked, "notes": [f"rerank: → {len(ranked)}"]}
 
@@ -54,7 +49,7 @@ def build_nodes(
         kept = [g.node for g in graded if g.label != "incorrect"]
         n_correct = sum(1 for g in graded if g.label == "correct")
         sufficient = n_correct >= 1
-        return {"evidence": kept or evidence, "sufficient": sufficient,
+        return {"evidence": kept, "sufficient": sufficient,
                 "notes": [f"crag: {n_correct} correct / {len(kept)} kept / {len(evidence)} → "
                           f"{'sufficient' if sufficient else 'corrective refine'}"]}
 
@@ -65,7 +60,8 @@ def build_nodes(
                 "iteration": state.get("iteration", 0) + 1, "notes": [f"refine: {new_query}"]}
 
     def generate(state: GraphState) -> GraphState:
-        text = engine.generate(state["question"], state.get("evidence", []))
+        evidence = state.get("evidence", [])
+        text = engine.generate(state["question"], evidence) if evidence else "证据不足，无法回答。"
         return {"answer": text, "notes": ["generate"]}
 
     def verify(state: GraphState) -> GraphState:
@@ -73,12 +69,20 @@ def build_nodes(
         answer = state.get("answer", "")
         evidence = state.get("evidence", [])
         claims = _split_claims(answer)
-        n_supported = sum(1 for c in claims if engine.supported(c, evidence)) if claims else 0
-        ratio = (n_supported / len(claims)) if claims else 1.0
-        grounded = ratio >= config.groundedness_threshold
-        cited = [Citation.from_node(n) for n in evidence if n.timecode in answer]
-        if not cited:
-            cited = [Citation.from_node(n) for n in evidence[: min(3, len(evidence))]]
+        supported_nodes = {}
+        n_supported = 0
+        for claim in claims:
+            times = re.findall(r"\[(\d{2,}:\d{2}:\d{2}-\d{2,}:\d{2}:\d{2})\]", claim)
+            refs = [n for n in evidence if n.timecode in times]
+            # A timecode shared by multiple videos is ambiguous: do not invent ownership.
+            unique = all(sum(n.timecode == t for n in evidence) == 1 for t in times)
+            bare = re.sub(r"\[[^\]]+\]", "", claim).strip()
+            if bare and refs and unique and len({n.timecode for n in refs}) == len(set(times)) and engine.supported(bare, refs):
+                n_supported += 1
+                supported_nodes.update({n.id: n for n in refs})
+        ratio = n_supported / len(claims) if claims else 0.0
+        grounded = bool(claims) and n_supported == len(claims) and ratio >= config.groundedness_threshold
+        cited = [Citation.from_node(n) for n in supported_nodes.values()]
         regen = state.get("regen", 0) + (0 if grounded else 1)
         return {"citations": cited, "grounded": grounded, "regen": regen,
                 "notes": [f"verify: grounded={ratio:.2f} ({'ok' if grounded else 'regen'})"]}
@@ -87,7 +91,7 @@ def build_nodes(
             "refine": refine, "generate": generate, "verify": verify}
 
 
-_SENT = re.compile(r"[^。！？!?\n]+[。！？!?]?")
+_SENT = re.compile(r"[^。！？!?\n.]+[。！？!?.]?(?:[ \t]*\[[0-9: -]+\])*")
 
 
 def _split_claims(text: str) -> list[str]:

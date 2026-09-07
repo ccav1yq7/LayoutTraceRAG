@@ -12,7 +12,10 @@ _TOKEN = re.compile(r"[\w一-鿿]+")
 
 
 def _keywords(text: str) -> set[str]:
-    return {t.lower() for t in _TOKEN.findall(text) if len(t) >= 2}
+    words = {t.lower() for t in _TOKEN.findall(text) if len(t) >= 2}
+    for span in re.findall(r"[一-鿿]+", text):
+        words.update(span[i:i+2] for i in range(len(span)-1))
+    return words
 
 
 class HeuristicEngine(LLMEngine):
@@ -69,7 +72,7 @@ class HeuristicEngine(LLMEngine):
     def generate(self, question: str, evidence: list[EvidenceNode]) -> str:
         if not evidence:
             return "未检索到可支撑的证据，无法回答。"
-        lines = ["根据检索到的视频证据（无 LLM，展示可溯源片段）:"]
+        lines = []
         for n in evidence[: self._top_answer]:
             lines.append(f"[{n.timecode}] {n.text.strip()}")
         return "\n".join(lines)

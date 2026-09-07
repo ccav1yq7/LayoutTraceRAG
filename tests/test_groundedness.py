@@ -20,7 +20,7 @@ def test_supported():
 
 
 def test_verify_grounded_answer():
-    out = _verify()({"answer": "混合 检索 的 实现 是 这样。", "evidence": EV, "regen": 0})
+    out = _verify()({"answer": f"混合 检索 的 实现 是 这样 [{EV[0].timecode}]。", "evidence": EV, "regen": 0})
     assert out["grounded"] is True
     assert out["regen"] == 0
     assert out["citations"]

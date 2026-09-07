@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "layouttrace"
-version = "0.1.0"
+version = "0.2.0"
 description = "Evidence-traceable long-video question answering — an agentic RAG orchestrated with LangGraph."
 readme = "README.md"
 requires-python = ">=3.11"
@@ -20,6 +20,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+storage = ["lancedb>=0.37.1"]
+benchmark = ["opencv-python-headless>=4.10", "yt-dlp>=2025.1.1"]
 # Retrieval / embedding stack (LanceDB + BGE-M3)
 retrieval = [
     "lancedb>=0.15",
@@ -58,6 +60,16 @@ Issues = "https://github.com/ccav1yq7/LayoutTraceRAG/issues"
 
 [tool.hatch.build.targets.wheel]
 packages = ["layouttrace"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "layouttrace/", "tests/", "examples/*.py", "scripts/*.py",
+    "results/tvqa_long_30s.json", "results/tvqa_long_60s.json",
+    "results/tvqa_long_llm_ablation.json", "results/tvqa_long_llm_recall_full18.json",
+    "results/tvqa_long_multimodal.json", "results/tvqa_long_recall_ceiling_sweep.json",
+    "results/README.md", "README.md", "LICENSE", "THIRD_PARTY_NOTICES.md", "CHANGELOG.md",
+    "pyproject.toml", "uv.lock", ".gitignore", ".github/",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

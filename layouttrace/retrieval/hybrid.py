@@ -19,6 +19,16 @@ class Searcher(Protocol):
     def search(self, query: str, k: int) -> list[str]: ...
 
 
+def collect_candidates(retriever, queries: list[str], candidate_k: int, rrf_k: int) -> list[EvidenceNode]:
+    """Shared query-fusion path for the application graph and benchmark."""
+    rankings, lookup = [], {}
+    for query in queries:
+        hits = retriever.retrieve(query, candidate_k)
+        rankings.append([node.id for node in hits])
+        lookup.update({node.id: node for node in hits})
+    return [lookup[key] for key, _ in reciprocal_rank_fusion(rankings, k=rrf_k)[:candidate_k]]
+
+
 class HybridRetriever:
     def __init__(
         self,

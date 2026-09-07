@@ -25,7 +25,7 @@ from layouttrace.retrieval import IdentityReranker
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--out", default="examples/report_synthetic.json", help="report output path")
+    ap.add_argument("--out", default="report.json", help="report output path")
     ap.add_argument("--iou", type=float, default=0.1, help="localization IoU threshold")
     args = ap.parse_args()
 

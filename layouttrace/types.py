@@ -85,8 +85,10 @@ class Answer(BaseModel):
 
     def render(self) -> str:
         lines = [self.text.rstrip()]
+        if not self.grounded:
+            lines.insert(0, "[未通过引用支撑核验，请勿将下文视为已验证答案]")
         if self.citations:
-            lines.append("\n来源:")
+            lines.append("\n已核验引用:")
             for c in self.citations:
                 lines.append(f"  [{c.timecode}] {c.snippet}")
         return "\n".join(lines)

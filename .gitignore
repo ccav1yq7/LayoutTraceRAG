@@ -33,3 +33,19 @@ data/
 
 # project-local model cache (HF_HOME), not committed
 .cache/
+
+# Credentials, generated reports and media
+*.pem
+*.key
+*.p12
+*.log
+*.jsonl
+*.avi
+*.mov
+*.m4a
+*.wav
+*.npy
+*.npz
+report.json
+dist/
+build/

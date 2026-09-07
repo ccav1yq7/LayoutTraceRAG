@@ -4,7 +4,7 @@
 
 Ask a question about a long lecture / meeting / tutorial and get an answer that points back to a **player-ready timecode** (e.g. `00:42:10-00:42:48`). Speech, on-frame text and scene keyframes are ingested as **timestamped evidence nodes**; a LangGraph agent retrieves them with hybrid search, keeps refining when the evidence is thin, and only then answers — with citations.
 
-> LangGraph · LangChain · BGE-M3 · bge-reranker-v2-m3 · CLIP/SigLIP · LanceDB (hybrid vector + full-text) · faster-whisper · PyAV · RapidOCR. **MIT-licensed, no proprietary dependencies.**
+> LangGraph · LangChain · BGE-M3 · bge-reranker-v2-m3 · CLIP/SigLIP · LanceDB (hybrid vector + full-text) · faster-whisper · PyAV · RapidOCR. **Project code: MIT. Model/data terms are separate; optional LLM services may be paid.**
 
 ## Why
 
@@ -27,9 +27,11 @@ plan → retrieve → rerank → grade ─┬─ (sufficient | budget) → gener
 - **generate** — answer strictly from evidence, citing `[HH:MM:SS-HH:MM:SS]`.
 - **verify** — **Self-RAG**: split the answer into claims, score claim-level groundedness against the cited evidence, and **regenerate (bounded)** when it falls short.
 
-Every node appends to an accumulated `notes` trace, so a full run is observable end-to-end. Swap the LLM (OpenAI / Anthropic) or run fully offline with the built-in heuristic engine; swap the store (LanceDB / in-memory) without touching the graph.
+Every node appends to an accumulated `notes` trace, so a full run is observable end-to-end. Without a key, generation uses an explicitly reported heuristic engine. For model-free embeddings, select `LT_EMBED_MODEL=hash-demo` (not semantic retrieval); swap the store (LanceDB / in-memory) without touching the graph.
 
 ## Multimodal retrieval
+
+The persistent CLI currently indexes ASR and frame OCR text. CLIP/SigLIP visual search is exposed through the library and benchmark scripts; persistent visual indexing is not yet wired into the CLI.
 
 Frames are indexed two ways: **on-frame OCR text** joins the lexical/dense side, and a **cross-modal encoder (CLIP / SigLIP)** embeds the frame image so a text question can retrieve frames by their **visual content** — a diagram with no readable text is still findable. The visual ranking joins the RRF fusion with a tunable `visual_weight`. (ColPali-style late-interaction is a drop-in behind the same `VisionEmbedder`.)
 
@@ -50,7 +52,9 @@ layouttrace eval examples.json --out report.json   # your indexed videos + label
 
 ## Real benchmark: TVQA-Long
 
-Ran the full pipeline against [TVQA-Long](https://huggingface.co/datasets/Vision-CAIR/TVQA-Long)
+**Historical measurements (before the September 2026 correctness fixes), not scores for the current release.** The graph previously truncated candidates before reranking; the current graph and benchmark share candidate fusion and require a fresh evaluation.
+
+Ran the experimental pipeline against [TVQA-Long](https://huggingface.co/datasets/Vision-CAIR/TVQA-Long)
 (episodes from 6 shows, ~20-minute concatenated timelines, official subtitles + gold
 timestamp spans) — real **BGE-M3 + bge-reranker-v2-m3** on an RTX 4090, 18 episodes /
 336 questions, all reports in [`results/`](results/):
@@ -68,9 +72,7 @@ levers all converge on the same ~0.84 ceiling** (see
 [`results/tvqa_long_recall_ceiling_sweep.json`](results/tvqa_long_recall_ceiling_sweep.json)):
 segment granularity (30s→180s), candidate-pool size, sliding-window overlap, and even
 swapping the heuristic query expansion for a **real LLM (gpt-5.4)** — none of it helps.
-Conclusion: on this benchmark the ceiling is BGE-M3's semantic-match capacity, not a
-chunking or query-formulation problem; closing it needs a different embedding model or a
-read-everything-then-filter architecture, not incremental tuning.
+These experiments suggest a representation bottleneck under the tested settings; they do not establish an intrinsic or unique BGE-M3 ceiling.
 
 Multimodal ablation (CLIP frame retrieval vs subtitle-only, `results/tvqa_long_multimodal.json`):
 fixing frame retrieval genuinely lifts recall (fusion beats text-only once CLIP works), a
@@ -87,31 +89,36 @@ extractive generation unless an LLM key is set.
 ## Install
 
 ```bash
-uv sync                                  # core (graph + retriever contracts)
-uv sync --extra retrieval --extra llm    # BGE-M3 + LanceDB + LLM providers
-uv sync --extra video                    # faster-whisper + PyAV + RapidOCR
+uv sync --locked --extra retrieval --extra video --extra llm
+# For offline unit tests only: uv sync --locked --extra dev
 ```
 
 ## Usage
 
 ```bash
 export OPENAI_API_KEY=...                 # or ANTHROPIC_API_KEY (optional; falls back offline)
-layouttrace index lecture.mp4             # ASR + keyframe OCR → LanceDB
-layouttrace ask "混合检索是怎么实现的？"    # answer with jump-to timecodes
+uv run --no-sync layouttrace index lecture.mp4             # ASR + keyframe OCR → LanceDB
+LT_USE_RERANKER=1 uv run --no-sync layouttrace ask "混合检索是怎么实现的？"    # answer with jump-to timecodes
 ```
 
 Library:
 
 ```python
 from layouttrace import Config
-from layouttrace.index import InMemoryStore, build_retriever
+from layouttrace.index import HashEmbedder, InMemoryStore, build_retriever
 from layouttrace.graph import build_graph, answer_question
 from layouttrace.llm import get_engine
 
-store = InMemoryStore(); store.add(nodes)        # your EvidenceNodes
+store = InMemoryStore(HashEmbedder()); store.add(nodes)        # your EvidenceNodes
 graph = build_graph(build_retriever(store), get_engine())
 print(answer_question(graph, "…").render())
 ```
+
+## Runtime and index behavior
+
+Model initialization failures raise errors; no model silently changes to hashing or identity reranking. Model-free tests inject hash/heuristic components explicitly. Existing indexes without embedding identity metadata must be rebuilt into a new `LT_TABLE`; the old index is retained. Unverified answers are marked, and sources are never fabricated from uncited candidates.
+
+With an LLM key configured, questions and retrieved evidence text are sent to that provider. Without a key, the heuristic generator runs locally; semantic/ASR/OCR models may still require initial downloads. See [third-party notices](THIRD_PARTY_NOTICES.md).
 
 ## Data and model licenses
 
@@ -126,4 +133,4 @@ uv run pytest        # graph + retrieval unit tests (no models/keys needed)
 
 ## License
 
-MIT — see [LICENSE](LICENSE). This is a clean-room implementation; it does not derive from any GPL/AGPL or non-commercial-licensed code.
+MIT — see [LICENSE](LICENSE). Third-party libraries, models and datasets retain their own licenses. This repository does not redistribute model weights or video assets.

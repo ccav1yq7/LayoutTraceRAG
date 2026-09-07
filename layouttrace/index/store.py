@@ -84,26 +84,36 @@ class LanceStore:
 
         self._config = config
         self._embedder = embedder or get_embedder(config.embed_model)
+        self._embedding_id = getattr(self._embedder, "model_id", getattr(self._embedder, "model_name", config.embed_model))
         self._db = __import__("lancedb").connect(config.db_path)
         self._table = None
         self._nodes: dict[str, EvidenceNode] = {}
         if config.table in self._db.table_names():  # reopen a persisted index
             self._table = self._db.open_table(config.table)
+            if "embedding_id" not in self._table.schema.names:
+                raise ValueError("Legacy index has no embedding identity; reindex into a new LT_TABLE")
             for r in self._table.to_arrow().to_pylist():
+                if r.get("embedding_id") != self._embedding_id:
+                    raise ValueError("Index embedding identity is missing or different. Reindex into a new LT_TABLE; the old table was not modified.")
                 n = EvidenceNode(id=r["id"], video_id=r["video_id"], modality=r["modality"],
                                  text=r["text"], start_s=r["start_s"], end_s=r["end_s"])
                 self._nodes[n.id] = n
 
     def add(self, nodes: list[EvidenceNode]) -> None:
+        if not nodes:
+            return
         vecs = self._embedder.embed_documents([n.text for n in nodes])
+        if len(vecs) != len(nodes) or len({len(v) for v in vecs}) != 1:
+            raise ValueError("Embedding count or dimensions are inconsistent")
         rows = [
             {"id": n.id, "video_id": n.video_id, "modality": n.modality, "text": n.text,
-             "start_s": n.start_s, "end_s": n.end_s, "vector": v}
+             "start_s": n.start_s, "end_s": n.end_s, "vector": v,
+             "embedding_id": self._embedding_id}
             for n, v in zip(nodes, vecs)
         ]
         if self._config.table in self._db.table_names():
             self._table = self._db.open_table(self._config.table)
-            self._table.add(rows)
+            self._table.merge_insert("id").when_matched_update_all().when_not_matched_insert_all().execute(rows)
         else:
             self._table = self._db.create_table(self._config.table, data=rows)
         self._table.create_fts_index("text", replace=True)
@@ -111,10 +121,14 @@ class LanceStore:
             self._nodes[n.id] = n
 
     def _dense(self, query: str, k: int) -> list[str]:
+        if self._table is None:
+            return []
         q = self._embedder.embed_query(query)
         return [r["id"] for r in self._table.search(q).limit(k).to_list()]
 
     def _lexical(self, query: str, k: int) -> list[str]:
+        if self._table is None:
+            return []
         return [r["id"] for r in self._table.search(query, query_type="fts").limit(k).to_list()]
 
     @property

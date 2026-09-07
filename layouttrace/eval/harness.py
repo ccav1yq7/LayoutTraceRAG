@@ -84,8 +84,10 @@ def evaluate(graph, examples: list[EvalExample], *, iou_threshold: float = 0.1) 
         recall_hit = any(overlaps((c.start_s, c.end_s), gold) for c in cites)
         # localized: top citation's IoU clears the bar OR its centre lands inside the
         # gold window — the latter credits instantaneous frame citations (start == end).
-        top = (cites[0].start_s, cites[0].end_s) if cites else None
-        localized = bool(cites) and (
+        all_cites = final.get("citations", [])
+        first = all_cites[0] if all_cites else None
+        top = (first.start_s, first.end_s) if first else None
+        localized = first is not None and first.video_id == ex.video_id and (
             temporal_iou(top, gold) >= iou_threshold or midpoint_in(top, gold)
         )
         grounded = bool(final.get("grounded", False))

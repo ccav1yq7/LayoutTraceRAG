@@ -1,5 +1,4 @@
-"""Embeddings — BGE-M3 in production, a deterministic hash embedder as a
-zero-dependency fallback for tests and demos."""
+"""BGE-M3 embeddings, with explicitly selected hashing for model-free demos."""
 from __future__ import annotations
 
 import hashlib
@@ -20,6 +19,7 @@ class HashEmbedder(Embedder):
 
     def __init__(self, dim: int = 256) -> None:
         self.dim = dim
+        self.model_id = f"hash-demo-v1:{dim}"
 
     def _vec(self, text: str) -> list[float]:
         v = [0.0] * self.dim
@@ -37,11 +37,15 @@ class HashEmbedder(Embedder):
 
 
 def get_embedder(model: str = "BAAI/bge-m3") -> Embedder:
-    """Return a BGE-M3 embedder if the optional stack is installed, else the
-    hash fallback."""
+    """Load the requested model; offline hashing must be explicitly selected."""
+    if model == "hash-demo":
+        return HashEmbedder()
     try:
         from langchain_huggingface import HuggingFaceEmbeddings
 
         return HuggingFaceEmbeddings(model_name=model)  # type: ignore[return-value]
-    except Exception:
-        return HashEmbedder()
+    except Exception as exc:
+        raise RuntimeError(
+            f"Cannot load embedding model {model!r}. Install the retrieval extra "
+            "and check model files. Use LT_EMBED_MODEL=hash-demo only for demos."
+        ) from exc
