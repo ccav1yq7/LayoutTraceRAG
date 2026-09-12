@@ -1,0 +1,28 @@
+{
+  "profile_kind": "engineering_fixture",
+  "baselines": [
+    "B1",
+    "B2"
+  ],
+  "protocols": [
+    "pm209-given-page",
+    "pm209-retrieved-top1",
+    "pm209-multipage"
+  ],
+  "budget": {
+    "max_pages": 4,
+    "max_evidence": 32,
+    "max_candidate_images": 4,
+    "max_display_images": 2,
+    "max_model_calls": 3,
+    "max_image_inputs": 8
+  },
+  "prompt_version": "fixed-rag-v6",
+  "requested_live_model": "deepseek-v4-flash-vision-exp",
+  "live_model_revision": null,
+  "fake_gateway": "engineering/extractive-fixture",
+  "official_benchmark": false,
+  "provider": "deepseek",
+  "image_reference_policy": "explicit-image-registered-owner-v1",
+  "verification_wire": "keyed-slots-v2"
+}

@@ -1,0 +1,17 @@
+{
+  "verified_on": "2026-09-10",
+  "official_repository": "registry-1.docker.io/library/python",
+  "index_digest": "sha256:78387bc3881b8273120a12ebe6c1ab22b018ccc2c9adf565ae1ac9b536e184ea",
+  "linux_amd64_manifest_digest": "sha256:2fe5997d249a808b8eeea52c58a1dbffbba28754dc11699ef5c029f2d818ce79",
+  "config_digest": "sha256:ec7d6c95cd3692a2e2d228a8b1ca74e4025b54121fcc4c5da6f09cfa473315ad",
+  "rootfs_diff_ids": [
+    "sha256:411a86676185cb54d695a805b238194a64e9b77e0c723f3802fbb87d333ea0b3",
+    "sha256:3070bb8623db07ca38569112f9b296043371a00bfb3ee4d9f8f63ddfd2f2efca",
+    "sha256:3d664d274420a79749a26f9e5115b2120d46037264011773ca4c52e22780b2ca",
+    "sha256:24257af4ce5bde01d3c7ebd6d366ec4a298ed27c794bbd6832ef5ce934a66170"
+  ],
+  "local_import_tag": "shopguide-base:verified-2fe5997d249a808b",
+  "python": "3.12.14",
+  "publisher_signature_verified": false,
+  "distribution": "debian-trixie"
+}

@@ -1,0 +1,3037 @@
+{
+  "Product": {
+    "additionalProperties": false,
+    "properties": {
+      "product_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Product Id",
+        "type": "string"
+      },
+      "domain": {
+        "enum": [
+          "demo",
+          "pm209",
+          "ecom"
+        ],
+        "title": "Domain",
+        "type": "string"
+      },
+      "brand": {
+        "minLength": 1,
+        "title": "Brand",
+        "type": "string"
+      },
+      "model": {
+        "minLength": 1,
+        "title": "Model",
+        "type": "string"
+      },
+      "aliases": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Aliases",
+        "type": "array"
+      },
+      "alias_basis": {
+        "anyOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Alias Basis"
+      },
+      "category": {
+        "minLength": 1,
+        "title": "Category",
+        "type": "string"
+      }
+    },
+    "required": [
+      "product_id",
+      "domain",
+      "brand",
+      "model",
+      "category"
+    ],
+    "title": "Product",
+    "type": "object"
+  },
+  "DocumentVersion": {
+    "additionalProperties": false,
+    "properties": {
+      "doc_version_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Doc Version Id",
+        "type": "string"
+      },
+      "source_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Source Id",
+        "type": "string"
+      },
+      "content_sha256": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Content Sha256",
+        "type": "string"
+      },
+      "language": {
+        "minLength": 1,
+        "title": "Language",
+        "type": "string"
+      },
+      "version_label": {
+        "minLength": 1,
+        "title": "Version Label",
+        "type": "string"
+      },
+      "status": {
+        "default": "staging",
+        "enum": [
+          "staging",
+          "active",
+          "revoked"
+        ],
+        "title": "Status",
+        "type": "string"
+      }
+    },
+    "required": [
+      "doc_version_id",
+      "source_id",
+      "content_sha256",
+      "language",
+      "version_label"
+    ],
+    "title": "DocumentVersion",
+    "type": "object"
+  },
+  "Locator": {
+    "$defs": {
+      "BBox": {
+        "additionalProperties": false,
+        "properties": {
+          "x0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X0",
+            "type": "number"
+          },
+          "y0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y0",
+            "type": "number"
+          },
+          "x1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X1",
+            "type": "number"
+          },
+          "y1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y1",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BBox",
+        "type": "object"
+      },
+      "BusinessLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "business",
+            "default": "business",
+            "title": "Type",
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "actual_tool_call_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Actual Tool Call Id",
+            "type": "string"
+          },
+          "entity_ref": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Entity Ref",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "actual_tool_call_id",
+          "entity_ref",
+          "observed_at"
+        ],
+        "title": "BusinessLocator",
+        "type": "object"
+      },
+      "ManualLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "manual",
+            "default": "manual",
+            "title": "Type",
+            "type": "string"
+          },
+          "doc_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Doc Version Id",
+            "type": "string"
+          },
+          "page_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Page Id",
+            "type": "string"
+          },
+          "page_index_0based": {
+            "minimum": 0,
+            "title": "Page Index 0Based",
+            "type": "integer"
+          },
+          "page_label": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Label"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region Id"
+          },
+          "bbox_normalized": {
+            "$ref": "#/$defs/BBox"
+          }
+        },
+        "required": [
+          "doc_version_id",
+          "page_id",
+          "page_index_0based",
+          "bbox_normalized"
+        ],
+        "title": "ManualLocator",
+        "type": "object"
+      },
+      "UploadLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "user_upload",
+            "default": "user_upload",
+            "title": "Type",
+            "type": "string"
+          },
+          "upload_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "bytes_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bytes Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "principal_id",
+          "bytes_sha256"
+        ],
+        "title": "UploadLocator",
+        "type": "object"
+      },
+      "VideoLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "video",
+            "default": "video",
+            "title": "Type",
+            "type": "string"
+          },
+          "video_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Video Version Id",
+            "type": "string"
+          },
+          "start_s": {
+            "minimum": 0,
+            "title": "Start S",
+            "type": "number"
+          },
+          "end_s": {
+            "minimum": 0,
+            "title": "End S",
+            "type": "number"
+          },
+          "duration_s": {
+            "minimum": 0,
+            "title": "Duration S",
+            "type": "number"
+          },
+          "frame_timestamp_s": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Frame Timestamp S"
+          }
+        },
+        "required": [
+          "video_version_id",
+          "start_s",
+          "end_s",
+          "duration_s"
+        ],
+        "title": "VideoLocator",
+        "type": "object"
+      }
+    },
+    "discriminator": {
+      "mapping": {
+        "business": "#/$defs/BusinessLocator",
+        "manual": "#/$defs/ManualLocator",
+        "user_upload": "#/$defs/UploadLocator",
+        "video": "#/$defs/VideoLocator"
+      },
+      "propertyName": "type"
+    },
+    "oneOf": [
+      {
+        "$ref": "#/$defs/ManualLocator"
+      },
+      {
+        "$ref": "#/$defs/VideoLocator"
+      },
+      {
+        "$ref": "#/$defs/BusinessLocator"
+      },
+      {
+        "$ref": "#/$defs/UploadLocator"
+      }
+    ]
+  },
+  "Asset": {
+    "$defs": {
+      "BBox": {
+        "additionalProperties": false,
+        "properties": {
+          "x0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X0",
+            "type": "number"
+          },
+          "y0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y0",
+            "type": "number"
+          },
+          "x1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X1",
+            "type": "number"
+          },
+          "y1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y1",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BBox",
+        "type": "object"
+      },
+      "BusinessLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "business",
+            "default": "business",
+            "title": "Type",
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "actual_tool_call_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Actual Tool Call Id",
+            "type": "string"
+          },
+          "entity_ref": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Entity Ref",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "actual_tool_call_id",
+          "entity_ref",
+          "observed_at"
+        ],
+        "title": "BusinessLocator",
+        "type": "object"
+      },
+      "ManualLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "manual",
+            "default": "manual",
+            "title": "Type",
+            "type": "string"
+          },
+          "doc_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Doc Version Id",
+            "type": "string"
+          },
+          "page_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Page Id",
+            "type": "string"
+          },
+          "page_index_0based": {
+            "minimum": 0,
+            "title": "Page Index 0Based",
+            "type": "integer"
+          },
+          "page_label": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Label"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region Id"
+          },
+          "bbox_normalized": {
+            "$ref": "#/$defs/BBox"
+          }
+        },
+        "required": [
+          "doc_version_id",
+          "page_id",
+          "page_index_0based",
+          "bbox_normalized"
+        ],
+        "title": "ManualLocator",
+        "type": "object"
+      },
+      "SearchScope": {
+        "additionalProperties": false,
+        "properties": {
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "authorized_product_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Authorized Product Ids",
+            "type": "array"
+          },
+          "confirmed_variant": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Confirmed Variant",
+            "type": "string"
+          },
+          "allowed_doc_version_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Doc Version Ids",
+            "type": "array"
+          },
+          "language_policy": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Language Policy",
+            "type": "array"
+          },
+          "snapshot_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Snapshot Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "principal_id",
+          "authorized_product_ids",
+          "confirmed_variant",
+          "allowed_doc_version_ids",
+          "language_policy",
+          "snapshot_id"
+        ],
+        "title": "SearchScope",
+        "type": "object"
+      },
+      "Transform": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": [
+              "original",
+              "page_render",
+              "crop",
+              "resize",
+              "video_frame"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "parent_asset_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Parent Asset Id"
+          },
+          "original_box": {
+            "anyOf": [
+              {
+                "maxItems": 4,
+                "minItems": 4,
+                "prefixItems": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "number"
+                  }
+                ],
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Original Box"
+          },
+          "matrix": {
+            "maxItems": 9,
+            "minItems": 9,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Matrix",
+            "type": "array"
+          },
+          "method_version": {
+            "minLength": 1,
+            "title": "Method Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "kind",
+          "matrix",
+          "method_version"
+        ],
+        "title": "Transform",
+        "type": "object"
+      },
+      "UploadLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "user_upload",
+            "default": "user_upload",
+            "title": "Type",
+            "type": "string"
+          },
+          "upload_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "bytes_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bytes Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "principal_id",
+          "bytes_sha256"
+        ],
+        "title": "UploadLocator",
+        "type": "object"
+      },
+      "VideoLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "video",
+            "default": "video",
+            "title": "Type",
+            "type": "string"
+          },
+          "video_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Video Version Id",
+            "type": "string"
+          },
+          "start_s": {
+            "minimum": 0,
+            "title": "Start S",
+            "type": "number"
+          },
+          "end_s": {
+            "minimum": 0,
+            "title": "End S",
+            "type": "number"
+          },
+          "duration_s": {
+            "minimum": 0,
+            "title": "Duration S",
+            "type": "number"
+          },
+          "frame_timestamp_s": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Frame Timestamp S"
+          }
+        },
+        "required": [
+          "video_version_id",
+          "start_s",
+          "end_s",
+          "duration_s"
+        ],
+        "title": "VideoLocator",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "asset_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Asset Id",
+        "type": "string"
+      },
+      "source_locator": {
+        "discriminator": {
+          "mapping": {
+            "business": "#/$defs/BusinessLocator",
+            "manual": "#/$defs/ManualLocator",
+            "user_upload": "#/$defs/UploadLocator",
+            "video": "#/$defs/VideoLocator"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ManualLocator"
+          },
+          {
+            "$ref": "#/$defs/VideoLocator"
+          },
+          {
+            "$ref": "#/$defs/BusinessLocator"
+          },
+          {
+            "$ref": "#/$defs/UploadLocator"
+          }
+        ],
+        "title": "Source Locator"
+      },
+      "bytes_sha256": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Bytes Sha256",
+        "type": "string"
+      },
+      "source_sha256": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Source Sha256",
+        "type": "string"
+      },
+      "transform": {
+        "$ref": "#/$defs/Transform"
+      },
+      "mime": {
+        "enum": [
+          "image/png",
+          "image/jpeg",
+          "image/webp"
+        ],
+        "title": "Mime",
+        "type": "string"
+      },
+      "dimensions": {
+        "maxItems": 2,
+        "minItems": 2,
+        "prefixItems": [
+          {
+            "type": "integer"
+          },
+          {
+            "type": "integer"
+          }
+        ],
+        "title": "Dimensions",
+        "type": "array"
+      },
+      "scope": {
+        "$ref": "#/$defs/SearchScope"
+      }
+    },
+    "required": [
+      "asset_id",
+      "source_locator",
+      "bytes_sha256",
+      "source_sha256",
+      "transform",
+      "mime",
+      "dimensions",
+      "scope"
+    ],
+    "title": "Asset",
+    "type": "object"
+  },
+  "Evidence": {
+    "$defs": {
+      "BBox": {
+        "additionalProperties": false,
+        "properties": {
+          "x0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X0",
+            "type": "number"
+          },
+          "y0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y0",
+            "type": "number"
+          },
+          "x1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X1",
+            "type": "number"
+          },
+          "y1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y1",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BBox",
+        "type": "object"
+      },
+      "BusinessLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "business",
+            "default": "business",
+            "title": "Type",
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "actual_tool_call_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Actual Tool Call Id",
+            "type": "string"
+          },
+          "entity_ref": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Entity Ref",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "actual_tool_call_id",
+          "entity_ref",
+          "observed_at"
+        ],
+        "title": "BusinessLocator",
+        "type": "object"
+      },
+      "ManualLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "manual",
+            "default": "manual",
+            "title": "Type",
+            "type": "string"
+          },
+          "doc_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Doc Version Id",
+            "type": "string"
+          },
+          "page_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Page Id",
+            "type": "string"
+          },
+          "page_index_0based": {
+            "minimum": 0,
+            "title": "Page Index 0Based",
+            "type": "integer"
+          },
+          "page_label": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Label"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region Id"
+          },
+          "bbox_normalized": {
+            "$ref": "#/$defs/BBox"
+          }
+        },
+        "required": [
+          "doc_version_id",
+          "page_id",
+          "page_index_0based",
+          "bbox_normalized"
+        ],
+        "title": "ManualLocator",
+        "type": "object"
+      },
+      "SearchScope": {
+        "additionalProperties": false,
+        "properties": {
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "authorized_product_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Authorized Product Ids",
+            "type": "array"
+          },
+          "confirmed_variant": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Confirmed Variant",
+            "type": "string"
+          },
+          "allowed_doc_version_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Allowed Doc Version Ids",
+            "type": "array"
+          },
+          "language_policy": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Language Policy",
+            "type": "array"
+          },
+          "snapshot_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Snapshot Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "principal_id",
+          "authorized_product_ids",
+          "confirmed_variant",
+          "allowed_doc_version_ids",
+          "language_policy",
+          "snapshot_id"
+        ],
+        "title": "SearchScope",
+        "type": "object"
+      },
+      "UploadLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "user_upload",
+            "default": "user_upload",
+            "title": "Type",
+            "type": "string"
+          },
+          "upload_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "bytes_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bytes Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "principal_id",
+          "bytes_sha256"
+        ],
+        "title": "UploadLocator",
+        "type": "object"
+      },
+      "VideoLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "video",
+            "default": "video",
+            "title": "Type",
+            "type": "string"
+          },
+          "video_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Video Version Id",
+            "type": "string"
+          },
+          "start_s": {
+            "minimum": 0,
+            "title": "Start S",
+            "type": "number"
+          },
+          "end_s": {
+            "minimum": 0,
+            "title": "End S",
+            "type": "number"
+          },
+          "duration_s": {
+            "minimum": 0,
+            "title": "Duration S",
+            "type": "number"
+          },
+          "frame_timestamp_s": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Frame Timestamp S"
+          }
+        },
+        "required": [
+          "video_version_id",
+          "start_s",
+          "end_s",
+          "duration_s"
+        ],
+        "title": "VideoLocator",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "evidence_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Evidence Id",
+        "type": "string"
+      },
+      "kind": {
+        "enum": [
+          "manual",
+          "video",
+          "business",
+          "user_upload"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "source_locator": {
+        "discriminator": {
+          "mapping": {
+            "business": "#/$defs/BusinessLocator",
+            "manual": "#/$defs/ManualLocator",
+            "user_upload": "#/$defs/UploadLocator",
+            "video": "#/$defs/VideoLocator"
+          },
+          "propertyName": "type"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/ManualLocator"
+          },
+          {
+            "$ref": "#/$defs/VideoLocator"
+          },
+          {
+            "$ref": "#/$defs/BusinessLocator"
+          },
+          {
+            "$ref": "#/$defs/UploadLocator"
+          }
+        ],
+        "title": "Source Locator"
+      },
+      "text": {
+        "minLength": 1,
+        "title": "Text",
+        "type": "string"
+      },
+      "asset_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Asset Ids",
+        "type": "array"
+      },
+      "scope": {
+        "$ref": "#/$defs/SearchScope"
+      },
+      "provenance": {
+        "minLength": 1,
+        "title": "Provenance",
+        "type": "string"
+      }
+    },
+    "required": [
+      "evidence_id",
+      "kind",
+      "source_locator",
+      "text",
+      "scope",
+      "provenance"
+    ],
+    "title": "Evidence",
+    "type": "object"
+  },
+  "Action": {
+    "$defs": {
+      "AbstainAction": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "abstain",
+            "default": "abstain",
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "missing_evidence": {
+            "default": [],
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "title": "Missing Evidence",
+            "type": "array"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "AbstainAction",
+        "type": "object"
+      },
+      "ClarifyAction": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "clarify",
+            "default": "clarify",
+            "title": "Kind",
+            "type": "string"
+          },
+          "question": {
+            "minLength": 1,
+            "title": "Question",
+            "type": "string"
+          },
+          "missing_fields": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "choices": {
+            "default": [],
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "title": "Choices",
+            "type": "array"
+          }
+        },
+        "required": [
+          "question",
+          "missing_fields"
+        ],
+        "title": "ClarifyAction",
+        "type": "object"
+      },
+      "DraftAnswerAction": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "draft_answer",
+            "default": "draft_answer",
+            "title": "Kind",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "requested_format": {
+            "const": "steps",
+            "default": "steps",
+            "title": "Requested Format",
+            "type": "string"
+          }
+        },
+        "required": [
+          "evidence_ids"
+        ],
+        "title": "DraftAnswerAction",
+        "type": "object"
+      },
+      "HandoffAction": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "handoff",
+            "default": "handoff",
+            "title": "Kind",
+            "type": "string"
+          },
+          "reason": {
+            "minLength": 1,
+            "title": "Reason",
+            "type": "string"
+          },
+          "summary_evidence_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "title": "Summary Evidence Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "HandoffAction",
+        "type": "object"
+      },
+      "ToolAction": {
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "const": "tool",
+            "default": "tool",
+            "title": "Kind",
+            "type": "string"
+          },
+          "tool_name": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Tool Name",
+            "type": "string"
+          },
+          "arguments": {
+            "additionalProperties": true,
+            "title": "Arguments",
+            "type": "object"
+          },
+          "public_reason": {
+            "minLength": 1,
+            "title": "Public Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool_name",
+          "arguments",
+          "public_reason"
+        ],
+        "title": "ToolAction",
+        "type": "object"
+      }
+    },
+    "discriminator": {
+      "mapping": {
+        "abstain": "#/$defs/AbstainAction",
+        "clarify": "#/$defs/ClarifyAction",
+        "draft_answer": "#/$defs/DraftAnswerAction",
+        "handoff": "#/$defs/HandoffAction",
+        "tool": "#/$defs/ToolAction"
+      },
+      "propertyName": "kind"
+    },
+    "oneOf": [
+      {
+        "$ref": "#/$defs/ToolAction"
+      },
+      {
+        "$ref": "#/$defs/ClarifyAction"
+      },
+      {
+        "$ref": "#/$defs/DraftAnswerAction"
+      },
+      {
+        "$ref": "#/$defs/HandoffAction"
+      },
+      {
+        "$ref": "#/$defs/AbstainAction"
+      }
+    ]
+  },
+  "Answer": {
+    "$defs": {
+      "BBox": {
+        "additionalProperties": false,
+        "properties": {
+          "x0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X0",
+            "type": "number"
+          },
+          "y0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y0",
+            "type": "number"
+          },
+          "x1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X1",
+            "type": "number"
+          },
+          "y1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y1",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BBox",
+        "type": "object"
+      },
+      "BusinessLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "business",
+            "default": "business",
+            "title": "Type",
+            "type": "string"
+          },
+          "domain": {
+            "enum": [
+              "demo",
+              "pm209",
+              "ecom"
+            ],
+            "title": "Domain",
+            "type": "string"
+          },
+          "actual_tool_call_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Actual Tool Call Id",
+            "type": "string"
+          },
+          "entity_ref": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Entity Ref",
+            "type": "string"
+          },
+          "observed_at": {
+            "format": "date-time",
+            "title": "Observed At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "domain",
+          "actual_tool_call_id",
+          "entity_ref",
+          "observed_at"
+        ],
+        "title": "BusinessLocator",
+        "type": "object"
+      },
+      "Citation": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Evidence Id",
+            "type": "string"
+          },
+          "source_locator": {
+            "discriminator": {
+              "mapping": {
+                "business": "#/$defs/BusinessLocator",
+                "manual": "#/$defs/ManualLocator",
+                "user_upload": "#/$defs/UploadLocator",
+                "video": "#/$defs/VideoLocator"
+              },
+              "propertyName": "type"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/ManualLocator"
+              },
+              {
+                "$ref": "#/$defs/VideoLocator"
+              },
+              {
+                "$ref": "#/$defs/BusinessLocator"
+              },
+              {
+                "$ref": "#/$defs/UploadLocator"
+              }
+            ],
+            "title": "Source Locator"
+          }
+        },
+        "required": [
+          "evidence_id",
+          "source_locator"
+        ],
+        "title": "Citation",
+        "type": "object"
+      },
+      "Claim": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Claim Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "manual_instruction",
+              "user_observation",
+              "business_state",
+              "inference"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "text": {
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "claim_id",
+          "kind",
+          "text",
+          "evidence_ids"
+        ],
+        "title": "Claim",
+        "type": "object"
+      },
+      "GuideStep": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Step Id",
+            "type": "string"
+          },
+          "title": {
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "text": {
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "claim_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Claim Ids",
+            "type": "array"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "display_asset_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "title": "Display Asset Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "step_id",
+          "title",
+          "text",
+          "claim_ids",
+          "evidence_ids"
+        ],
+        "title": "GuideStep",
+        "type": "object"
+      },
+      "ManualLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "manual",
+            "default": "manual",
+            "title": "Type",
+            "type": "string"
+          },
+          "doc_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Doc Version Id",
+            "type": "string"
+          },
+          "page_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Page Id",
+            "type": "string"
+          },
+          "page_index_0based": {
+            "minimum": 0,
+            "title": "Page Index 0Based",
+            "type": "integer"
+          },
+          "page_label": {
+            "anyOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Label"
+          },
+          "region_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Region Id"
+          },
+          "bbox_normalized": {
+            "$ref": "#/$defs/BBox"
+          }
+        },
+        "required": [
+          "doc_version_id",
+          "page_id",
+          "page_index_0based",
+          "bbox_normalized"
+        ],
+        "title": "ManualLocator",
+        "type": "object"
+      },
+      "UploadLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "user_upload",
+            "default": "user_upload",
+            "title": "Type",
+            "type": "string"
+          },
+          "upload_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Upload Id",
+            "type": "string"
+          },
+          "principal_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Principal Id",
+            "type": "string"
+          },
+          "bytes_sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Bytes Sha256",
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "principal_id",
+          "bytes_sha256"
+        ],
+        "title": "UploadLocator",
+        "type": "object"
+      },
+      "Verification": {
+        "additionalProperties": false,
+        "properties": {
+          "structural": {
+            "default": "fail",
+            "enum": [
+              "pass",
+              "fail"
+            ],
+            "title": "Structural",
+            "type": "string"
+          },
+          "semantic": {
+            "default": "not_checked",
+            "enum": [
+              "supported",
+              "partial",
+              "unsupported",
+              "not_checked"
+            ],
+            "title": "Semantic",
+            "type": "string"
+          },
+          "warnings": {
+            "default": [],
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "title": "Verification",
+        "type": "object"
+      },
+      "VideoLocator": {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "const": "video",
+            "default": "video",
+            "title": "Type",
+            "type": "string"
+          },
+          "video_version_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Video Version Id",
+            "type": "string"
+          },
+          "start_s": {
+            "minimum": 0,
+            "title": "Start S",
+            "type": "number"
+          },
+          "end_s": {
+            "minimum": 0,
+            "title": "End S",
+            "type": "number"
+          },
+          "duration_s": {
+            "minimum": 0,
+            "title": "Duration S",
+            "type": "number"
+          },
+          "frame_timestamp_s": {
+            "anyOf": [
+              {
+                "minimum": 0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Frame Timestamp S"
+          }
+        },
+        "required": [
+          "video_version_id",
+          "start_s",
+          "end_s",
+          "duration_s"
+        ],
+        "title": "VideoLocator",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": 2,
+        "default": 2,
+        "title": "Schema Version",
+        "type": "integer"
+      },
+      "status": {
+        "enum": [
+          "answered",
+          "partial",
+          "needs_clarification",
+          "abstained",
+          "handoff"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "product_ref": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Product Ref",
+        "type": "string"
+      },
+      "source_snapshot_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Source Snapshot Id",
+        "type": "string"
+      },
+      "summary": {
+        "minLength": 1,
+        "title": "Summary",
+        "type": "string"
+      },
+      "prerequisites": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Prerequisites",
+        "type": "array"
+      },
+      "steps": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/GuideStep"
+        },
+        "title": "Steps",
+        "type": "array"
+      },
+      "claims": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/Claim"
+        },
+        "title": "Claims",
+        "type": "array"
+      },
+      "unresolved_items": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Unresolved Items",
+        "type": "array"
+      },
+      "followup_question": {
+        "anyOf": [
+          {
+            "minLength": 1,
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Followup Question"
+      },
+      "citations": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/Citation"
+        },
+        "title": "Citations",
+        "type": "array"
+      },
+      "verification": {
+        "$ref": "#/$defs/Verification"
+      }
+    },
+    "required": [
+      "status",
+      "product_ref",
+      "source_snapshot_id",
+      "summary"
+    ],
+    "title": "GuideAnswer",
+    "type": "object"
+  },
+  "CorpusPage": {
+    "$defs": {
+      "BBox": {
+        "additionalProperties": false,
+        "properties": {
+          "x0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X0",
+            "type": "number"
+          },
+          "y0": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y0",
+            "type": "number"
+          },
+          "x1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "X1",
+            "type": "number"
+          },
+          "y1": {
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Y1",
+            "type": "number"
+          }
+        },
+        "required": [
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "BBox",
+        "type": "object"
+      },
+      "CorpusRegion": {
+        "additionalProperties": false,
+        "properties": {
+          "region_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Region Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "Text",
+              "Title",
+              "Product Image",
+              "illustration",
+              "Table",
+              "graphic"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "original_xywh": {
+            "maxItems": 4,
+            "minItems": 4,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Original Xywh",
+            "type": "array"
+          },
+          "bbox": {
+            "$ref": "#/$defs/BBox"
+          }
+        },
+        "required": [
+          "region_id",
+          "kind",
+          "text",
+          "original_xywh",
+          "bbox"
+        ],
+        "title": "CorpusRegion",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "page_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Page Id",
+        "type": "string"
+      },
+      "manual_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Manual Id",
+        "type": "string"
+      },
+      "index_0based": {
+        "minimum": 0,
+        "title": "Index 0Based",
+        "type": "integer"
+      },
+      "image_sha256": {
+        "pattern": "^[0-9a-f]{64}$",
+        "title": "Image Sha256",
+        "type": "string"
+      },
+      "image_name": {
+        "pattern": "^[0-9a-f]{64}\\.(png|jpg|jpeg|webp)$",
+        "title": "Image Name",
+        "type": "string"
+      },
+      "width": {
+        "exclusiveMinimum": 0,
+        "title": "Width",
+        "type": "integer"
+      },
+      "height": {
+        "exclusiveMinimum": 0,
+        "title": "Height",
+        "type": "integer"
+      },
+      "regions": {
+        "items": {
+          "$ref": "#/$defs/CorpusRegion"
+        },
+        "title": "Regions",
+        "type": "array"
+      }
+    },
+    "required": [
+      "page_id",
+      "manual_id",
+      "index_0based",
+      "image_sha256",
+      "image_name",
+      "width",
+      "height",
+      "regions"
+    ],
+    "title": "CorpusPage",
+    "type": "object"
+  },
+  "Relation": {
+    "additionalProperties": false,
+    "properties": {
+      "relation_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Relation Id",
+        "type": "string"
+      },
+      "source_evidence_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Source Evidence Id",
+        "type": "string"
+      },
+      "target_evidence_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Target Evidence Id",
+        "type": "string"
+      },
+      "kind": {
+        "enum": [
+          "nearby_text",
+          "belongs_to_page"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "basis": {
+        "minLength": 1,
+        "title": "Basis",
+        "type": "string"
+      },
+      "inferred": {
+        "default": true,
+        "title": "Inferred",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "relation_id",
+      "source_evidence_id",
+      "target_evidence_id",
+      "kind",
+      "basis"
+    ],
+    "title": "Relation",
+    "type": "object"
+  },
+  "IndexIdentity": {
+    "additionalProperties": false,
+    "properties": {
+      "model_id": {
+        "minLength": 1,
+        "title": "Model Id",
+        "type": "string"
+      },
+      "revision": {
+        "minLength": 1,
+        "title": "Revision",
+        "type": "string"
+      },
+      "dimension": {
+        "exclusiveMinimum": 0,
+        "title": "Dimension",
+        "type": "integer"
+      },
+      "preprocessing": {
+        "minLength": 1,
+        "title": "Preprocessing",
+        "type": "string"
+      },
+      "schema_version": {
+        "const": 2,
+        "default": 2,
+        "title": "Schema Version",
+        "type": "integer"
+      },
+      "model_mode": {
+        "enum": [
+          "fake",
+          "real"
+        ],
+        "title": "Model Mode",
+        "type": "string"
+      }
+    },
+    "required": [
+      "model_id",
+      "revision",
+      "dimension",
+      "preprocessing",
+      "model_mode"
+    ],
+    "title": "IndexIdentity",
+    "type": "object"
+  },
+  "RAGBudget": {
+    "additionalProperties": false,
+    "properties": {
+      "max_pages": {
+        "default": 4,
+        "maximum": 4,
+        "minimum": 1,
+        "title": "Max Pages",
+        "type": "integer"
+      },
+      "max_evidence": {
+        "default": 32,
+        "maximum": 64,
+        "minimum": 1,
+        "title": "Max Evidence",
+        "type": "integer"
+      },
+      "max_candidate_images": {
+        "default": 4,
+        "maximum": 4,
+        "minimum": 1,
+        "title": "Max Candidate Images",
+        "type": "integer"
+      },
+      "max_display_images": {
+        "default": 2,
+        "maximum": 2,
+        "minimum": 0,
+        "title": "Max Display Images",
+        "type": "integer"
+      },
+      "max_model_calls": {
+        "default": 3,
+        "maximum": 3,
+        "minimum": 1,
+        "title": "Max Model Calls",
+        "type": "integer"
+      },
+      "max_image_inputs": {
+        "default": 8,
+        "maximum": 8,
+        "minimum": 0,
+        "title": "Max Image Inputs",
+        "type": "integer"
+      }
+    },
+    "title": "RAGBudget",
+    "type": "object"
+  },
+  "WriterDraft": {
+    "$defs": {
+      "DraftClaim": {
+        "additionalProperties": false,
+        "properties": {
+          "text": {
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "text",
+          "evidence_ids"
+        ],
+        "title": "DraftClaim",
+        "type": "object"
+      },
+      "DraftStep": {
+        "additionalProperties": false,
+        "properties": {
+          "title": {
+            "minLength": 1,
+            "title": "Title",
+            "type": "string"
+          },
+          "text": {
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          },
+          "evidence_ids": {
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "minItems": 1,
+            "title": "Evidence Ids",
+            "type": "array"
+          },
+          "asset_ids": {
+            "default": [],
+            "items": {
+              "pattern": "^[a-z][a-z0-9_]{2,95}$",
+              "type": "string"
+            },
+            "title": "Asset Ids",
+            "type": "array"
+          }
+        },
+        "required": [
+          "title",
+          "text",
+          "evidence_ids"
+        ],
+        "title": "DraftStep",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "status": {
+        "enum": [
+          "answered",
+          "partial",
+          "abstained"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "summary": {
+        "minLength": 1,
+        "title": "Summary",
+        "type": "string"
+      },
+      "summary_evidence_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Summary Evidence Ids",
+        "type": "array"
+      },
+      "prerequisites": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/DraftClaim"
+        },
+        "title": "Prerequisites",
+        "type": "array"
+      },
+      "steps": {
+        "default": [],
+        "items": {
+          "$ref": "#/$defs/DraftStep"
+        },
+        "title": "Steps",
+        "type": "array"
+      },
+      "unresolved_items": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Unresolved Items",
+        "type": "array"
+      }
+    },
+    "required": [
+      "status",
+      "summary"
+    ],
+    "title": "WriterDraft",
+    "type": "object"
+  },
+  "SemanticVerdict": {
+    "$defs": {
+      "ClaimCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "claim_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Claim Id",
+            "type": "string"
+          },
+          "supported": {
+            "title": "Supported",
+            "type": "boolean"
+          },
+          "explanation": {
+            "minLength": 1,
+            "title": "Explanation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "claim_id",
+          "supported",
+          "explanation"
+        ],
+        "title": "ClaimCheck",
+        "type": "object"
+      },
+      "ImageCheck": {
+        "additionalProperties": false,
+        "properties": {
+          "step_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Step Id",
+            "type": "string"
+          },
+          "asset_id": {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "title": "Asset Id",
+            "type": "string"
+          },
+          "supported": {
+            "title": "Supported",
+            "type": "boolean"
+          },
+          "explanation": {
+            "minLength": 1,
+            "title": "Explanation",
+            "type": "string"
+          }
+        },
+        "required": [
+          "step_id",
+          "asset_id",
+          "supported",
+          "explanation"
+        ],
+        "title": "ImageCheck",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "claims": {
+        "items": {
+          "$ref": "#/$defs/ClaimCheck"
+        },
+        "title": "Claims",
+        "type": "array"
+      },
+      "images": {
+        "items": {
+          "$ref": "#/$defs/ImageCheck"
+        },
+        "title": "Images",
+        "type": "array"
+      },
+      "complete": {
+        "title": "Complete",
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "claims",
+      "images",
+      "complete"
+    ],
+    "title": "SemanticVerdict",
+    "type": "object"
+  },
+  "PMRequest": {
+    "additionalProperties": false,
+    "properties": {
+      "question_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Question Id",
+        "type": "string"
+      },
+      "manual_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Manual Id",
+        "type": "string"
+      },
+      "question": {
+        "minLength": 1,
+        "title": "Question",
+        "type": "string"
+      },
+      "split": {
+        "enum": [
+          "train",
+          "val",
+          "test"
+        ],
+        "title": "Split",
+        "type": "string"
+      },
+      "protocol": {
+        "enum": [
+          "pm209-given-page",
+          "pm209-retrieved-top1",
+          "pm209-multipage"
+        ],
+        "title": "Protocol",
+        "type": "string"
+      },
+      "given_page_id": {
+        "anyOf": [
+          {
+            "pattern": "^[a-z][a-z0-9_]{2,95}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Given Page Id"
+      }
+    },
+    "required": [
+      "question_id",
+      "manual_id",
+      "question",
+      "split",
+      "protocol"
+    ],
+    "title": "PMRequest",
+    "type": "object"
+  },
+  "PMPrediction": {
+    "additionalProperties": false,
+    "properties": {
+      "schema_version": {
+        "const": 1,
+        "default": 1,
+        "title": "Schema Version",
+        "type": "integer"
+      },
+      "dataset": {
+        "const": "pm209",
+        "default": "pm209",
+        "title": "Dataset",
+        "type": "string"
+      },
+      "question_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Question Id",
+        "type": "string"
+      },
+      "manual_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Manual Id",
+        "type": "string"
+      },
+      "split": {
+        "enum": [
+          "train",
+          "val",
+          "test"
+        ],
+        "title": "Split",
+        "type": "string"
+      },
+      "protocol": {
+        "enum": [
+          "pm209-given-page",
+          "pm209-retrieved-top1",
+          "pm209-multipage"
+        ],
+        "title": "Protocol",
+        "type": "string"
+      },
+      "baseline": {
+        "enum": [
+          "B1",
+          "B2"
+        ],
+        "title": "Baseline",
+        "type": "string"
+      },
+      "snapshot_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Snapshot Id",
+        "type": "string"
+      },
+      "run_id": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Run Id",
+        "type": "string"
+      },
+      "model_mode": {
+        "enum": [
+          "real",
+          "fake"
+        ],
+        "title": "Model Mode",
+        "type": "string"
+      },
+      "given_information": {
+        "additionalProperties": {
+          "type": "boolean"
+        },
+        "title": "Given Information",
+        "type": "object"
+      },
+      "configuration_sha256": {
+        "anyOf": [
+          {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Configuration Sha256"
+      },
+      "retrieved_page_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Retrieved Page Ids",
+        "type": "array"
+      },
+      "visited_page_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Visited Page Ids",
+        "type": "array"
+      },
+      "answer_text": {
+        "title": "Answer Text",
+        "type": "string"
+      },
+      "predicted_region_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Predicted Region Ids",
+        "type": "array"
+      },
+      "display_asset_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Display Asset Ids",
+        "type": "array"
+      },
+      "status": {
+        "enum": [
+          "answered",
+          "partial",
+          "abstained",
+          "error"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "error": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Error"
+      },
+      "model_calls": {
+        "minimum": 0,
+        "title": "Model Calls",
+        "type": "integer"
+      },
+      "image_inputs": {
+        "minimum": 0,
+        "title": "Image Inputs",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "question_id",
+      "manual_id",
+      "split",
+      "protocol",
+      "baseline",
+      "snapshot_id",
+      "run_id",
+      "model_mode",
+      "given_information",
+      "answer_text",
+      "status",
+      "model_calls",
+      "image_inputs"
+    ],
+    "title": "PMPrediction",
+    "type": "object"
+  },
+  "AgentBudget": {
+    "additionalProperties": false,
+    "properties": {
+      "max_planner_steps": {
+        "default": 8,
+        "maximum": 8,
+        "minimum": 1,
+        "title": "Max Planner Steps",
+        "type": "integer"
+      },
+      "max_tool_attempts": {
+        "default": 12,
+        "maximum": 12,
+        "minimum": 1,
+        "title": "Max Tool Attempts",
+        "type": "integer"
+      },
+      "max_model_calls": {
+        "default": 12,
+        "maximum": 12,
+        "minimum": 3,
+        "title": "Max Model Calls",
+        "type": "integer"
+      },
+      "reserved_finalization_calls": {
+        "const": 2,
+        "default": 2,
+        "title": "Reserved Finalization Calls",
+        "type": "integer"
+      },
+      "max_pages": {
+        "default": 4,
+        "maximum": 4,
+        "minimum": 1,
+        "title": "Max Pages",
+        "type": "integer"
+      },
+      "max_image_inputs": {
+        "default": 8,
+        "maximum": 8,
+        "minimum": 0,
+        "title": "Max Image Inputs",
+        "type": "integer"
+      },
+      "max_reported_tokens": {
+        "default": 48000,
+        "minimum": 1,
+        "title": "Max Reported Tokens",
+        "type": "integer"
+      },
+      "deadline_seconds": {
+        "default": 90,
+        "maximum": 90,
+        "minimum": 1,
+        "title": "Deadline Seconds",
+        "type": "integer"
+      }
+    },
+    "title": "AgentBudget",
+    "type": "object"
+  },
+  "PlanDecision": {
+    "$defs": {
+      "ToolArguments": {
+        "additionalProperties": false,
+        "properties": {
+          "query": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Query"
+          },
+          "top_k": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Top K"
+          },
+          "page_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Id"
+          },
+          "include_neighbors": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Include Neighbors"
+          },
+          "asset_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Asset Id"
+          },
+          "upload_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Upload Id"
+          },
+          "question": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Question"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reason"
+          },
+          "related_order_item": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Related Order Item"
+          },
+          "summary": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Summary"
+          },
+          "confirmation_id": {
+            "anyOf": [
+              {
+                "pattern": "^[a-z][a-z0-9_]{2,95}$",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Confirmation Id"
+          }
+        },
+        "title": "ToolArguments",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "kind": {
+        "enum": [
+          "tool",
+          "clarify",
+          "draft_answer",
+          "handoff",
+          "abstain"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "tool_name": {
+        "anyOf": [
+          {
+            "enum": [
+              "list_purchased_items",
+              "resolve_product",
+              "search_manuals",
+              "read_page",
+              "inspect_asset",
+              "inspect_user_image",
+              "prepare_service_request",
+              "commit_service_request"
+            ],
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Tool Name"
+      },
+      "arguments": {
+        "$ref": "#/$defs/ToolArguments"
+      },
+      "evidence_ids": {
+        "default": [],
+        "items": {
+          "pattern": "^[a-z][a-z0-9_]{2,95}$",
+          "type": "string"
+        },
+        "title": "Evidence Ids",
+        "type": "array"
+      },
+      "question": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Question"
+      },
+      "missing_fields": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Missing Fields",
+        "type": "array"
+      },
+      "reason": {
+        "minLength": 1,
+        "title": "Reason",
+        "type": "string"
+      }
+    },
+    "required": [
+      "kind",
+      "reason"
+    ],
+    "title": "PlanDecision",
+    "type": "object"
+  },
+  "ImageObservation": {
+    "additionalProperties": false,
+    "properties": {
+      "description": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "title": "Description",
+        "type": "string"
+      },
+      "uncertainties": {
+        "default": [],
+        "items": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "title": "Uncertainties",
+        "type": "array"
+      }
+    },
+    "required": [
+      "description"
+    ],
+    "title": "ImageObservation",
+    "type": "object"
+  },
+  "ServiceArgs": {
+    "additionalProperties": false,
+    "properties": {
+      "reason": {
+        "maxLength": 500,
+        "minLength": 1,
+        "title": "Reason",
+        "type": "string"
+      },
+      "related_order_item": {
+        "pattern": "^[a-z][a-z0-9_]{2,95}$",
+        "title": "Related Order Item",
+        "type": "string"
+      },
+      "summary": {
+        "maxLength": 2000,
+        "minLength": 1,
+        "title": "Summary",
+        "type": "string"
+      }
+    },
+    "required": [
+      "reason",
+      "related_order_item",
+      "summary"
+    ],
+    "title": "ServiceArgs",
+    "type": "object"
+  }
+}

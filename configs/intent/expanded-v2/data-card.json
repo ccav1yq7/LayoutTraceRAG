@@ -1,0 +1,56 @@
+{
+  "version": "intent-expanded-v2",
+  "rows": 342,
+  "source_families": 126,
+  "near_duplicate_components": 126,
+  "splits": {
+    "train": 198,
+    "val": 72,
+    "test": 72
+  },
+  "kinds": {
+    "single": 216,
+    "no_current_intent": 36,
+    "multi": 90
+  },
+  "label_counts": {
+    "train": {
+      "product.howto": 34,
+      "product.troubleshoot": 34,
+      "service.rules": 34,
+      "service.apply": 34,
+      "service.progress": 34,
+      "service.handoff": 34
+    },
+    "val": {
+      "product.howto": 16,
+      "product.troubleshoot": 16,
+      "service.rules": 16,
+      "service.apply": 16,
+      "service.progress": 16,
+      "service.handoff": 16
+    },
+    "test": {
+      "product.howto": 16,
+      "product.troubleshoot": 16,
+      "service.rules": 16,
+      "service.apply": 16,
+      "service.progress": 16,
+      "service.handoff": 16
+    }
+  },
+  "near_duplicate_links": [],
+  "normalized_overlap_with_bootstrap": [],
+  "dataset_sha256": "16f6710bf75656998a88e244f7094a7c32e2899ab0114e33ae43e2f56d59de6e",
+  "family_sha256": "b0fcf8a6864700d919a9cbef1e8999c6969d5acade1721d0770f31a69b331f78",
+  "seed": 20260910,
+  "near_duplicate_threshold": 0.84,
+  "limitations": [
+    "All samples authored/composed, not real customer logs",
+    "Heuristic similarity grouping does not guarantee semantic independence",
+    "Multi-intent compositions are templated and grouped by all source families",
+    "No automatic retraining or production activation"
+  ],
+  "cross_split_near_duplicate_audit": [],
+  "builder_sha256": "1fee44c7448c6e3d743ef9d9b1dec451d83858a777ba32c8f4ba83275fca1802"
+}

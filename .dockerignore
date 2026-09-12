@@ -1,0 +1,15 @@
+**
+!pyproject.toml
+!uv.lock
+!README.md
+!LICENSE
+!shopguide/
+!shopguide/**
+!web/
+!web/dist/
+!web/dist/**
+!deploy/
+!deploy/shopguide/
+!deploy/shopguide/Dockerfile
+**/__pycache__/
+**/*.pyc

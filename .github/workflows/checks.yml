@@ -1,0 +1,100 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        python: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff
+        with:
+          python-version: ${{ matrix.python }}
+      - run: uv sync --locked --extra dev --extra storage --extra shopguide --extra shopguide-dev
+      - run: uv run --no-sync pytest -q
+      - run: uv run --no-sync ruff check shopguide tests/shopguide scripts/shopguide
+      - run: uv run --no-sync mypy shopguide --ignore-missing-imports --follow-imports silent --check-untyped-defs
+      - run: uv run --no-sync shopguide doctor --config configs/shopguide/offline.json
+      - run: uv run --no-sync shopguide schema --out artifacts/shopguide/contracts.json
+      - run: uv build
+
+  browser:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: uv sync --locked --extra dev --extra storage --extra shopguide --extra shopguide-dev
+      - run: npm ci && npm run build && npm test
+        working-directory: web
+      - run: npx playwright install --with-deps chromium
+        working-directory: web
+      - name: Browser workflows against delayed fake gateway
+        shell: bash
+        run: |
+          mkdir -p artifacts/shopguide/m5
+          uv run --no-sync python scripts/shopguide/browser_test_server.py --root .shopguide/ci-browser --port 8486 > artifacts/shopguide/m5/server.log 2>&1 &
+          app_pid=$!
+          trap 'kill "$app_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..60}; do
+            if curl -fsS http://127.0.0.1:8486/health/live > /dev/null; then break; fi
+            sleep 1
+          done
+          cd web
+          SG_CHROME_PATH="$(node -e 'process.stdout.write(require("@playwright/test").chromium.executablePath())')" npm run test:e2e
+
+  ecom-reference:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: astral-sh/setup-uv@d0d8abe699bfb85fec6de9f7adb5ae17292296ff
+        with:
+          python-version: '3.11'
+      - run: uv sync --locked --extra dev --extra storage --extra shopguide --extra shopguide-dev
+      - run: uv venv .venv-ecom --python 3.11
+      - run: uv pip sync --python .venv-ecom/bin/python configs/ecom/requirements.lock
+      - name: Fixed upstream code, no official model requests
+        run: |
+          git clone https://github.com/XiaoduoAILab/ECom-Bench.git external/ECom-Bench
+          git -C external/ECom-Bench checkout --detach bc5018daaf45eea12330941bce68cebd293cfa85
+      - run: uv run --no-sync pytest tests/shopguide/test_m6.py -q
+
+  local-container:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm ci && npm run build
+        working-directory: web
+      - run: docker build -f deploy/shopguide/Dockerfile -t shopguide:ci .
+      - name: Non-root local container health check (fake model)
+        shell: bash
+        run: |
+          docker run -d --name shopguide-ci --network host --read-only --cap-drop ALL --security-opt no-new-privileges --tmpfs /tmp:size=134217728 --mount type=volume,src=shopguide-ci-data,dst=/data shopguide:ci
+          trap 'docker logs shopguide-ci; docker rm -f shopguide-ci; docker volume rm shopguide-ci-data' EXIT
+          ready=0
+          for attempt in {1..60}; do
+            if curl -fsS http://127.0.0.1:8484/health/ready; then ready=1; break; fi
+            sleep 1
+          done
+          test "$ready" = 1
+          test "$(docker exec shopguide-ci id -u)" = 10001

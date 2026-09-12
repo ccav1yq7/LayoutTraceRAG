@@ -1,0 +1,81 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# venvs and local credentials
+.venv/
+.env
+.env.*
+!.env.example
+.venv-*/
+venv/
+
+# Runtime data, index and model caches
+*.lance/
+models/
+*.mp4
+*.mkv
+*.webm
+
+# OS / editor
+.DS_Store
+._*
+.idea/
+.vscode/
+
+# downloaded datasets (not committed)
+data/
+
+# project-local model cache (HF_HOME), not committed
+.cache/
+
+# Credentials, generated reports and media
+*.pem
+*.key
+*.p12
+*.log
+*.avi
+*.mov
+*.m4a
+*.wav
+*.npy
+*.npz
+report.json
+dist/
+build/
+
+# 生成的运行日志（.jsonl）。不要全局忽略 *.jsonl：
+# configs/intent/ 下的两个数据集是测试夹具，必须入库。
+artifacts/**/*.jsonl
+.shopguide/**/*.jsonl
+
+# 意图数据集为源码级夹具（人工编写的开发样例），显式纳入版本控制
+!configs/intent/**/*.jsonl
+
+# ShopGuide local audit, benchmark sources and runtime state
+artifacts/
+external/
+.shopguide/
+LLM.comfig
+LLM.config
+!shopguide/models/
+!shopguide/models/**
+
+# Frontend local build/test dependencies
+web/node_modules/
+web/dist/
+web/playwright-report/
+web/test-results/
+web/*.tsbuildinfo
+
+# Agent session logs (contain absolute local paths; keep local only)
+.claude/logs/
+.claude/sessions/
+
+# Re-ignore bytecode: the models/** negation above would otherwise re-include it
+__pycache__/
+*.py[cod]

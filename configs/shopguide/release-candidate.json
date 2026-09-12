@@ -1,0 +1,131 @@
+{
+  "profile": "trixie-supply-chain-candidate-2026-09-10",
+  "gates": {
+    "python_regression": {
+      "status": "pass",
+      "note": "193 Python tests passed",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/supply-chain/all-tests.xml",
+          "sha256": "43b69f01364c27dbe6c6d26f03fe8187c6060655aac50b551d9b5d22247c0704"
+        }
+      ]
+    },
+    "browser_regression": {
+      "status": "pass",
+      "note": "9 tests passed on Debian 13 candidate",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-browser.json",
+          "sha256": "3673cd9ef53c8e85c62d8fd6acb70a6614c35089001486e9d9482581204fd762"
+        }
+      ]
+    },
+    "security": {
+      "status": "pass",
+      "note": "API authorization and new backup/locking negative tests passed; local-demo scope",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/m7/focused-tests.txt",
+          "sha256": "3388ab6c065b1ba7812b71fc344dccd0cae10a3d3448933edac6769c9b91428e"
+        }
+      ]
+    },
+    "restore_drill": {
+      "status": "pass",
+      "note": "sg0004 fixtures: Debian 13 reads Bookworm backup; Bookworm candidate reads Debian 13 backup",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-upgrade-rollback.json",
+          "sha256": "cc46a8bb9ced173d33de29ff3122c5f378370a9cedfb206f7b764c0e032a21f9"
+        },
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-restore.json",
+          "sha256": "bc2da94035b8a475c278cfc23269f4c443bb6191319d9f2e29ad0e1904cda987"
+        }
+      ]
+    },
+    "performance": {
+      "status": "blocked",
+      "note": "Only delayed-fake sample, one principal: 2 admitted, 3 rate limited; real-model target not verified",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/m7/drill-v4/report.json",
+          "sha256": "01c5a6d72fe3302eca047bf7a84d761185c207f91399365e6f69301912e46ece"
+        }
+      ]
+    },
+    "container": {
+      "status": "blocked",
+      "note": "Official Debian 13/Python base content verified; runtime tests passed; publisher signature and unresolved findings remain",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-candidate-proof.json",
+          "sha256": "a71f5a3ba5a7ac5b7a5dd84b7488ffa4d56698426138e336284e425c921e5bb5"
+        },
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-base/proof.json",
+          "sha256": "e0aeda93f83504fb0665fb2284cfdb317ee53c2fddb50edb852f1dbcc377216b"
+        }
+      ]
+    },
+    "dependency_audit": {
+      "status": "blocked",
+      "note": "Raw scan has 51 HIGH + 3 CRITICAL matches, no available fixes. Two critical preconditions absent in this image; raw findings retained without exemptions. Embedded-library coverage incomplete.",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/supply-chain/trixie-summary.json",
+          "sha256": "d06d4c96d815d9a761a1647995ed543bf38f68700a739b15a9981e9228f3a213"
+        },
+        {
+          "path": "artifacts/shopguide/supply-chain/critical-triage/trixie-assessment.json",
+          "sha256": "e62353e28dedc93fbbbcb4dacd35af08dca289b1e110f31983e796b5c2f33bc8"
+        },
+        {
+          "path": "artifacts/shopguide/supply-chain/npm-audit.json",
+          "sha256": "c794df7e0ed9080c389c9ce6f7977cf708d4e7c4bd52d138311efeff6221a907"
+        }
+      ]
+    },
+    "licenses": {
+      "status": "blocked",
+      "note": "Package license inventory collected; all third-party data/native redistribution permissions not closed",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/m7/sbom.cdx.json",
+          "sha256": "cdfd24225157279fedce4f41fdb7b7b2caaec3fff3173e47b7743117d56629a9"
+        }
+      ]
+    },
+    "pm209_official": {
+      "status": "blocked",
+      "note": "Full official protocol scores and real BGE remain unavailable",
+      "evidence": []
+    },
+    "ecom_fair_comparison": {
+      "status": "blocked",
+      "note": "20-request dev smoke was budget-asymmetric, not a fair baseline",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/m6/deepseek-dev-text/audit.json",
+          "sha256": "6aa2b30468d939e19d7193a57b4d021d92cdd42ab527e40145f6c41954510b52"
+        }
+      ]
+    },
+    "production_auth": {
+      "status": "blocked",
+      "note": "Only local demo identity; public authentication and TLS not implemented",
+      "evidence": []
+    },
+    "image_provenance": {
+      "status": "pass",
+      "note": "Registered-source checks passed; demo uses self-authored fixtures",
+      "evidence": [
+        {
+          "path": "artifacts/shopguide/m7/focused-tests.txt",
+          "sha256": "3388ab6c065b1ba7812b71fc344dccd0cae10a3d3448933edac6769c9b91428e"
+        }
+      ]
+    }
+  }
+}

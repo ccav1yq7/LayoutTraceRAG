@@ -1,0 +1,7 @@
+# Isolated native MCP/scorer bridge; upstream 2025 MCP/core versions.
+mcp==1.7.1
+langchain-core==0.3.58
+openai==1.71.0
+requests==2.32.5
+PyYAML==6.0.3
+rich==14.3.3

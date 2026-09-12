@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "upstream_revision": "5226a9aa849fd3b8f35620e7b7d7d10c09d754a2",
+  "nlgeval_revision": "2ab4528fad5548315cf61e40c2249fec8c8ad233",
+  "source_files": {
+    "evaluate.py": "4d7cf68eb42a36cdb731426f90207b5c6e923e1126686c03390f4213e371f979",
+    "scripts/compute_metrics.py": "5d0fa4cc28ecf1f58b88fafcc2110aee1b58af3807065cac8007dac158879bdc",
+    "dataset/mqa_dataset.py": "8cbf66b2250cc7b3b5581568e9e3b479280ebae7a078d9f25ae56775aa0637c4",
+    "dataset/const.py": "17897f407217730e7f8871e80bb5b1c7457ae2380a45c66ecc95e3a0f2a5ff0d"
+  },
+  "nlgeval_files": {
+    "__init__.py": "85038a0dff74206e19b58ec1ee0477c9b1f37fd1b1999f8e3df4fbb7a2d8aade",
+    "pycocoevalcap/__init__.py": "d02e91fe125b82e6e5f0642b897f7439094506d06f32771b40d00170deb8eae1",
+    "pycocoevalcap/bleu/__init__.py": "d02e91fe125b82e6e5f0642b897f7439094506d06f32771b40d00170deb8eae1",
+    "pycocoevalcap/bleu/bleu.py": "22e00b38be80b8f7ccc9e085eb0ffa529d110a0ad73d3c477aa1e937fa0afc1b",
+    "pycocoevalcap/bleu/bleu_scorer.py": "0e0c224cf2da4b3ac9e463993d88b5b0ed8bc4ad214f64636aa92b57d79da44d",
+    "pycocoevalcap/cider/__init__.py": "d02e91fe125b82e6e5f0642b897f7439094506d06f32771b40d00170deb8eae1",
+    "pycocoevalcap/cider/cider.py": "f35ade7ee7513bc06b36990251621addd41f6c669d11fdb43cd41b04c9d59774",
+    "pycocoevalcap/cider/cider_scorer.py": "7a1b67d3496748c25fe13b775a05a0126af9e97737330b2d81f8fb3ff80dd7d7",
+    "pycocoevalcap/meteor/__init__.py": "d02e91fe125b82e6e5f0642b897f7439094506d06f32771b40d00170deb8eae1",
+    "pycocoevalcap/meteor/data/paraphrase-en.gz": "c147ac7d2c91f2fbb3ad31e4b352235061eb83145e0434daf217ee9ca5975f48",
+    "pycocoevalcap/meteor/meteor-1.5.jar": "1e57b4c72c0830ebe68558f1c799a624e96cbc1b6045c9f6330e26dcff6eafc2",
+    "pycocoevalcap/meteor/meteor.py": "05be38a4aae390e5bfd77c5fe0c16db40424a22539f9eeed74a6ee635a237c0c",
+    "pycocoevalcap/meteor/tests/test_meteor.py": "5adde35522a74b9a5ad0f95e5c40505f98f6d00d069edaeae07144799dcac646",
+    "pycocoevalcap/rouge/__init__.py": "2d1098934cdf7b3e648c88708942987828d6eb1c4a0c64051570bd222566d4ed",
+    "pycocoevalcap/rouge/rouge.py": "59f2ba8e43be852fcf277ff418409df5fd22ef44c57a904a0829dacbe9b8ce18",
+    "pycocoevalcap/spice/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "pycocoevalcap/spice/lib/Meteor-1.5.jar": "014a3627d277a6f4ba5b44a20733f8dff28bbb428204c36abfda56565658ba09",
+    "pycocoevalcap/spice/lib/SceneGraphParser-1.0.jar": "83a1b7c3f896dd135f9539ba41d65b155827dfc312893bfd5bb835c9f9ae310a",
+    "pycocoevalcap/spice/lib/ejml-0.23.jar": "12d44e81fdd661ad2aac6384511facf3d8fa003c3ce8d9cec5f22827d1819a26",
+    "pycocoevalcap/spice/lib/fst-2.47.jar": "8c871febc859cf72dbed1c6c1eebc5600c3d93c3e986feccf4623cc5086098cc",
+    "pycocoevalcap/spice/lib/guava-19.0.jar": "58d4cc2e05ebb012bbac568b032f75623be1cb6fb096f3c60c72a86f7f057de4",
+    "pycocoevalcap/spice/lib/hamcrest-core-1.3.jar": "66fdef91e9739348df7a096aa384a5685f4e875584cce89386a7a47251c4d8e9",
+    "pycocoevalcap/spice/lib/jackson-core-2.5.3.jar": "c9a900c30c702d371be2d3714938dfa6de616599c8eb39f8e3cf7aedd62dfd32",
+    "pycocoevalcap/spice/lib/javassist-3.19.0-GA.jar": "d19c1ef43ccd9cb1b39466bb2f1c8e45c2b6752f1e13a3dfb60096543d1791fa",
+    "pycocoevalcap/spice/lib/json-simple-1.1.1.jar": "4e69696892b88b41c55d49ab2fdcc21eead92bf54acc588c0050596c3b75199c",
+    "pycocoevalcap/spice/lib/junit-4.12.jar": "59721f0805e223d84b90677887d9ff567dc534d7c502ca903c0c2b17f05c116a",
+    "pycocoevalcap/spice/lib/lmdbjni-0.4.6.jar": "f4e8c51eb4ef05abe57d2187e76f5c335e4ef16d8503329eb7dbc5ae7a90529c",
+    "pycocoevalcap/spice/lib/lmdbjni-linux64-0.4.6.jar": "0b7773db873aaeec399a50113c0a4e121df0eff5e724607f7bc8171452107d94",
+    "pycocoevalcap/spice/lib/lmdbjni-osx64-0.4.6.jar": "7d66778037b5689e7c6daf22a7140722f2085da4ae479bceda4a4be487d55460",
+    "pycocoevalcap/spice/lib/lmdbjni-win64-0.4.6.jar": "969c6aa59893b82856a6832da640672b0f23f1d72f70d7b04296c71970d75b79",
+    "pycocoevalcap/spice/lib/objenesis-2.4.jar": "090416e160a7e398f79e0149a7b05ef328b1843898a34e08c1cc170128d326d0",
+    "pycocoevalcap/spice/lib/slf4j-api-1.7.12.jar": "0aee9a77a4940d72932b0d0d9557793f872e66a03f598e473f45e7efecdccf99",
+    "pycocoevalcap/spice/lib/slf4j-simple-1.7.21.jar": "a20179cc3ded2d7e2f5def4ccb34b2d0836e2f8c9e79352a6babd6a6559cc8e0",
+    "pycocoevalcap/spice/lib/stanford-corenlp-3.6.0-models.jar": "d285157bd7887ee3018094b5dbae092e49088b023361ccdb550ee1daf9b2c9bd",
+    "pycocoevalcap/spice/lib/stanford-corenlp-3.6.0.jar": "d341d5863276f55782c5ef73212222d6b3b48e02ae1951ab6de7618d28b12742",
+    "pycocoevalcap/spice/spice-1.0.jar": "6c6a73ae6dd108667047c1818707590413934dcb9f1a62cef6469059b41b3d59",
+    "pycocoevalcap/spice/spice.py": "fa54c96bfec25340cc721ece0db45ad7b56dee652ee279a06c39568c15b30e68",
+    "skipthoughts/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "skipthoughts/skipthoughts.py": "67c7a71c9d8c289b2a63c1b9de69523bed2757b552c73dcdc5f155a533fa68ea",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_nlgeval.py": "9f1968302e4247723b4b3771b77d98f2dc691048715d3ce82796406d83ae699c",
+    "utils.py": "29ae33a5c2aded49c7c3c109433beafb6bee905687394f74abaf1491f5051a7e",
+    "word2vec/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "word2vec/evaluate.py": "436ef784c48c6605ba25a307bea8cf3f95c952950ba09488d60068989ef10e0f",
+    "word2vec/generate_w2v_files.py": "35e679c028aa3b38240fad3ce24f1e348bd1097767b26d18cce04353e2491ec9"
+  },
+  "packages": {
+    "nlg-eval": "2.4.1",
+    "numpy": "1.26.4",
+    "scikit-learn": "1.5.2",
+    "six": "1.17.0",
+    "psutil": "7.2.2",
+    "transformers": "4.57.6",
+    "sentencepiece": "0.2.1"
+  },
+  "tokenizer": {
+    "model_id": "google-t5/t5-base",
+    "revision": "a9723ea7f1b39c1eae772870f3b547bf6ef7e6c1",
+    "files": {
+      "tokenizer.json": "d2acde0d8d71dd30a711834b07781b9c89feaac33fd332f60507699282740066",
+      "config.json": "46dd7cb62d29c81fb551e0ef1ea274c24a46ba441eeb948897706252933df033",
+      "spiece.model": "d60acb128cf7b7f2536e8f38a5b18a05535c9e14c7a355904270e15b0945ea86"
+    }
+  },
+  "resource_source": "https://nlp.stanford.edu/software/stanford-corenlp-full-2015-12-09.zip",
+  "resource_archive_sha256": "c3e8f129d56cbcd9747ee6615736fb4bc023c5ea550e50465fdf3138fdb9a187",
+  "metric_configuration": {
+    "no_skipthoughts": true,
+    "no_glove": true,
+    "metrics_to_omit": []
+  },
+  "gold_text_policy": "T5-base fast legacy tokenizer + official semantic special tokens (mask=False): encode pad+answer; remove EOS; decode skip_special_tokens, then upstream remove_punc/lower; HF tokenizer replacement for original pretrained archive disclosed",
+  "java": {
+    "version": "Temurin 8u504-b01",
+    "source": "https://github.com/adoptium/temurin8-binaries/releases/download/jdk8u504-b01/OpenJDK8U-jre_x64_linux_hotspot_8u504b01.tar.gz",
+    "archive_sha256": "52dcd578baca1d3e449ea86768a9129c0ee04d7b22565695498353cc66940c61",
+    "files": {
+      "bin/java": "1a081a2c18367e5d966d716a6091d5fe2eec26b19e471980d0d8fd550174e21c",
+      "lib/rt.jar": "ebcc5ee761cb12c3f37222da14bdf14e4e9f16e86b60c21827e6252e38c91531",
+      "lib/ext/nashorn.jar": "12d7e165b7dcb45a08c429c8ec80a5b4450d32f4f3266f181d699d7cc644524e",
+      "release": "19a7fc301b5944d21f9d6254a0c00b4f554b02a61d86026eedeb5c4cd1e7d49b"
+    }
+  }
+}

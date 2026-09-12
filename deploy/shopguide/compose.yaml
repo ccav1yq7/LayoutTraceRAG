@@ -1,0 +1,22 @@
+name: shopguide-local
+services:
+  app:
+    image: shopguide:supply-chain-candidate
+    build:
+      context: ../..
+      dockerfile: deploy/shopguide/Dockerfile
+    # Linux local demo only: CLI still binds 127.0.0.1; no unauthenticated public listener.
+    network_mode: host
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp:size=128m,mode=1777]
+    volumes:
+      - data:/data
+      - backups:/backups
+    stop_grace_period: 120s
+    restart: "no"
+volumes:
+  data:
+  backups:

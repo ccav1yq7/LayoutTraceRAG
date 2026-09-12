@@ -1,0 +1,11 @@
+{
+  "version": "intent-classifier-install-v1",
+  "enabled": true,
+  "model_path": "../../artifacts/shopguide/bert-intent-expanded-v2",
+  "model_card_sha256": "9a794cbf0ed18ccb1b43fe124d2555b6a829da1826ae28f2dfa37e123a9ccf26",
+  "allow_development": true,
+  "device": "cpu",
+  "authorization": "User requested fine-tuning and installation; development status retained",
+  "dataset": "expanded-v2, assistant-authored development data",
+  "previous_model": "bert-intent-bootstrap, retained without activation"
+}

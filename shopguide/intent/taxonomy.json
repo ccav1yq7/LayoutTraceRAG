@@ -1,0 +1,7 @@
+{"version":"shopguide-intent-v1","definitions":[
+{"intent_id":"product.howto","description":"咨询商品使用或安装方法","examples":["怎么安装？"],"excludes":["帮我提交维修工单"]},
+{"intent_id":"product.troubleshoot","description":"描述故障并请求排查","examples":["还是无法开机"],"excludes":["查询工单进度"]},
+{"intent_id":"service.rules","description":"咨询售后规则或办理方法，不是办理授权","examples":["怎么申请维修？"],"excludes":["请创建售后工单"]},
+{"intent_id":"service.apply","description":"请求办理售后；只能经过现有确认流程创建模拟工单","examples":["帮我申请维修"],"excludes":["维修收费吗？"]},
+{"intent_id":"service.progress","description":"查询已提交请求进度；识别不代表工具已支持","examples":["维修到哪一步了？"],"excludes":["怎么申请维修"]},
+{"intent_id":"service.handoff","description":"希望联系人工客服；不代表已接通","examples":["转人工"],"excludes":["你能解决吗"]}]}

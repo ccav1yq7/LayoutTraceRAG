@@ -1,0 +1,11 @@
+{
+  "kind": "authored bootstrap only",
+  "rows": 90,
+  "limitations": [
+    "No real customer conversations",
+    "Not independently human reviewed",
+    "Single-turn classifier, multi-turn semantics remain with Judge",
+    "Small closely related domain phrases; test scores are exploratory only"
+  ],
+  "split_policy": "authored groups fixed before training; no later-turn data or augmented near-duplicates across splits"
+}

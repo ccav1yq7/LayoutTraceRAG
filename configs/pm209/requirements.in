@@ -1,0 +1,8 @@
+# Isolated overlap-metric runtime. NLGEval no_skipthoughts=True/no_glove=True
+# does not import its obsolete gensim/Theano training stack.
+numpy==1.26.4
+scikit-learn==1.5.2
+six==1.17.0
+psutil==7.2.2
+sentencepiece==0.2.1
+transformers==4.57.6

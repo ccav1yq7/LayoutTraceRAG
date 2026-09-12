@@ -1,0 +1,18 @@
+{
+  "profile_kind": "engineering_agent",
+  "model_id": "deepseek-v4-flash-vision-exp",
+  "model_revision": null,
+  "prompt_version": "agent-v3",
+  "budget": {
+    "max_planner_steps": 8,
+    "max_tool_attempts": 12,
+    "max_model_calls": 12,
+    "reserved_finalization_calls": 2,
+    "max_pages": 4,
+    "max_image_inputs": 8,
+    "max_reported_tokens": 48000,
+    "deadline_seconds": 90
+  },
+  "comparison_baselines": ["B2_shared_tools", "B3"],
+  "official_benchmark": false
+}

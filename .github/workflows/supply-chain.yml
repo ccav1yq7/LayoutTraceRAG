@@ -1,0 +1,31 @@
+name: supply-chain-audit
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  image-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - run: npm ci && npm run build
+        working-directory: web
+      - run: docker build -f deploy/shopguide/Dockerfile -t shopguide:audit .
+      - run: python scripts/shopguide/install_scanner.py --lock deploy/shopguide/scanner.lock.json --out .cache/audit-scanner
+      - name: Scan all detected OS and language packages; retain unfixed findings
+        shell: bash
+        run: |
+          mkdir -p artifacts/supply-chain
+          .cache/audit-scanner/trivy --version > artifacts/supply-chain/scanner-version.txt
+          .cache/audit-scanner/trivy image --image-src docker --scanners vuln --format json --output artifacts/supply-chain/scan.json shopguide:audit
+          candidate_image_id=$(docker image inspect shopguide:audit --format '{{.Id}}')
+          python scripts/shopguide/summarize_image_scan.py --scan artifacts/supply-chain/scan.json --image-id "$candidate_image_id" --out artifacts/supply-chain/gate.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: supply-chain-evidence
+          path: artifacts/supply-chain/
+          if-no-files-found: warn

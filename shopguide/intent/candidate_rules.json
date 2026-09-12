@@ -1,0 +1,12 @@
+{
+  "version": "intent-candidates-v1",
+  "taxonomy_version": "shopguide-intent-v1",
+  "rules": {
+    "product.howto": {"positive": ["怎么安装", "怎样启动", "怎么使用", "配对", "恢复设置"], "negative": [], "slots": ["model"]},
+    "product.troubleshoot": {"positive": ["无法", "故障", "还是不行", "没有声音", "不开机"], "negative": [], "slots": ["model", "symptom"]},
+    "service.rules": {"positive": ["收费", "规则", "怎么申请", "保修", "条件"], "negative": [], "slots": []},
+    "service.apply": {"positive": ["申请维修", "创建工单", "帮我申请"], "negative": ["先别申请", "不申请了", "不是要申请", "不要创建"], "slots": ["order_item"]},
+    "service.progress": {"positive": ["进度", "查询工单", "到哪一步", "工单记录"], "negative": [], "slots": ["ticket"]},
+    "service.handoff": {"positive": ["转人工", "人工客服"], "negative": ["不用转人工"], "slots": []}
+  }
+}
