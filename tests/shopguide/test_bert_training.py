@@ -2,8 +2,8 @@ import json
 
 import pytest
 
-from shopguide.intent.bert import BertIntentClassifier
 from scripts.shopguide.train_intent_bert import read_dataset
+from shopguide.intent.bert import BertIntentClassifier
 
 
 def test_group_split_leakage_rejected(tmp_path):
